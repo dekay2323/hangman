@@ -97,9 +97,22 @@ class GameLogicServiceSpec extends Specification {
         	def guess = "a".toList()
 
         then:"Answers must grow, score goes down, and you have not won nor lost"
-			service.calcScore(solution, guess, score) == 7
-        	service.hasLost(service.calcScore(solution, guess, score)) == false
-        	service.hasWon(solution, service.newAnswers(answers, guess)) == false
-        	service.newAnswers(answers, guess) == ['a']
+			(score = service.calcScore(solution, guess, score)) == 7
+        	service.hasLost(score) == false
+        	(answers = service.newAnswers(answers, guess)) == ['a']
+        	service.hasWon(solution, answers) == false
+        	service.printer(solution, answers) == "........"
+
+        when:"Second round"
+
+        and:"Second guess is correct"
+            guess = "e".toList()
+
+        then:"Answers must grow, score stays the same, and you have not won nor lost"
+			(score = service.calcScore(solution, guess, score)) == 7
+        	service.hasLost(score) == false
+        	(answers = service.newAnswers(answers, guess)) == ['a','e']
+        	service.hasWon(solution, answers) == false
+        	service.printer(solution, answers) == ".e...e.."
 	}
 }
