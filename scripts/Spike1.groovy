@@ -1,9 +1,12 @@
 class Solution {
     String solution = "testtest"
 
-    public def applyAnswer(def answer) {
-        def matcher = solution =~ /${answer}/
-        matcher.each { println it }
+    public def applyAnswer(def answer, def current) {
+        def matcher = solution =~ /[${answer}]/
+        //matcher.each { println "it: ${it}" }
+        def replacer = (solution =~ /[^${answer}]/)?.replaceAll(".")
+        println "replacer ${replacer}, current ${current}"
+        replacer
     } 
     
     public def isSolved(def answer) {
@@ -15,9 +18,6 @@ class Answer {
     String answer
 }
 
-class AnswerResult {
-}
-
 class Game {
 }
 
@@ -26,8 +26,10 @@ class Game {
     
 
 println "------"
-sol.applyAnswer("t")
-println sol.isSolved("test")
-println sol.isSolved("testtest")
+def current
+current = sol.applyAnswer("t", current)
+current = sol.applyAnswer("x", current)
+current = sol.applyAnswer("e", current)
+current = sol.applyAnswer("testtest", current)
 println "------"
 
