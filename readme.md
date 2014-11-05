@@ -19,4 +19,5 @@
 	- Use scaffolding to see them hang together
 	- Get the basic domain classes correct
 - Fixed H2 bug in logging!
+- Going to rather spike a solution, REPL
 	
