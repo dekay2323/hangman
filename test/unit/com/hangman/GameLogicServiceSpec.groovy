@@ -10,7 +10,7 @@ import spock.lang.Specification
 @TestMixin(GrailsUnitTestMixin)
 @TestFor(GameLogicService)
 class GameLogicServiceSpec extends Specification {
-
+    
     def setup() {
     }
 

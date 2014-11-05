@@ -12,4 +12,8 @@ class Game {
     	question nullable: false, blank: false
     	answers nullable: true, blank: true
     }
+
+    public String toString() {
+    	question
+    }
 }

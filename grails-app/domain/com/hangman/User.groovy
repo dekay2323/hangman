@@ -9,4 +9,8 @@ class User {
     	name nullable: false, blank: false
     	games nullable: true
     }
+
+    public String toString() {
+    	name
+    }    
 }

@@ -8,35 +8,42 @@ import grails.test.mixin.*
 import spock.lang.*
 
 @TestFor(GameJsonController)
-@Mock(Game)
+@Mock([Game, User])
 class GameJsonControllerSpec extends Specification {
     
     def populateValidParams(params) {
         assert params != null
-		params.user = "Andy"
+        def user1 = new User(name: "Andy")
+        user1.save(flush: true)
+		params.user = user1.id
 		params.solution = "Spock"
 		params.question = "Who is a Vulcan"
 		return params
     }
 
     def setup() {
-
+            // Load some test data 
+            def user1 = new User(name: "Demian")
+            user1.save(flush: true)
+            def user2 = new User(name: "Carrie")
+            user2.save(flush: true)               
+            def game = new Game(user: user1, solution: "testest", question: "Whatever")
+            game.save(flush: true)
+            game = new Game(user: user2, solution: "Tiberius", question: "Whatever")
+            game.save(flush: true)   
     }
 
     void "Test the index action returns the correct model"() {
 
         when:"The index action is executed"
-            def game = new Game(user: "Demian", solution: "testtest", question: "Whatever")
-			game.save(flush: true)
-			game = new Game(user: "Carrie", solution: "Tiberius", question: "Whatever")
-			game.save(flush: true)
             controller.index()
 
         then:"The response is correct"
             response.status == OK.value
         	def jsonResponse = JSON.parse(response.text)
-        	jsonResponse.size() == 2      
-        	jsonResponse.find {it.user == "Carrie"} != null            
+        	jsonResponse.size() == 2     
+            // The JSON parse is not deep, it only passes id
+        	jsonResponse.find {User.get(it.user.id)?.name == "Carrie"} != null            
     }
 
     void "Test the save action correctly persists an instance"() {
@@ -101,13 +108,13 @@ class GameJsonControllerSpec extends Specification {
             def game = new Game(populateValidParams(params)).save(flush: true)
 
         then:"It exists"
-            Game.count() == 1
+            Game.count() == 3
 
         when:"The domain instance is passed to the delete action"
             controller.delete(game)
 
         then:"The instance is deleted"
-            Game.count() == 0
+            Game.count() == 2
             response.status == NO_CONTENT.value
     }
 }

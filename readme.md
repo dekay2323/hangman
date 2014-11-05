@@ -41,6 +41,7 @@
 		- Get the logic working in a serivice
 		- Can expose via json rest later
 		- Least side effects
+	- Build gameplay controller to play game
 
 
 
