@@ -37,6 +37,10 @@
 		- Playing with new rest controller
 		- New spock testing
 	- HTML an JSON version
+	- Test driven solution
+		- Get the logic working in a serivice
+		- Can expose via json rest later
+		- Least side effects
 
 
 

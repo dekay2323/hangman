@@ -1,7 +1,7 @@
 package com.hangman
 
 class Game {
-	String user
+	User user
 	String solution
 	String question
 	String answers = ""
