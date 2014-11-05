@@ -3,24 +3,72 @@ class HangmanGame {
     final def loose = "You have lost"
     final def win = "You have won"
 
-    def loosePoint(def solution, def answer) {
-        answer.intersect(solution)
+    def applyAnswer(def solution, def answer) {
+        return printer(solution, answer)
     }
-
-    def gainPoint(def solution, def answer) {
-        answer.intersect(solution)
+    
+    def getNewScore(def solution, def answer, def score) {
+        if (answer.size() == answer.intersect(solution).size()) {
+            return score-1
+        }
+        score
     }
 
     boolean hasWon(def solution, def answer) {
         Set solutionSet = solution as Set
-        println solutionSet.size()
         Set answerSet = answer as Set
         if (answerSet.intersect(solutionSet).size() == solutionSet.size())
             return true
 
         return false
     }
+    
+    private def printer = { solution, answer ->
+       solution.collect {
+       if (answer.contains(it))
+           return it
+       else
+           return '.'
+        }?.join()
+    }
 }
 
-println "Guess
+println "---Start"
+def game = new HangmanGame()
+def solution = "testtest".toList()
+def answer = []
+def score = 8
+println game.welcome
+println game.applyAnswer(solution, answer)
+println game.hasWon(solution, answer)
+println "---"
+
+answer += 't'
+println score = game.getNewScore(solution, answer, score)
+println "answer: ${answer}"
+println game.applyAnswer(solution, answer)
+println game.hasWon(solution, answer)
+println "---"
+
+answer += 'x'
+println score = game.getNewScore(solution, answer, score)
+println "answer: ${answer}"
+println game.applyAnswer(solution, answer)
+println game.hasWon(solution, answer)
+println "---"
+
+answer += 's'
+println score = game.getNewScore(solution, answer, score)
+println "answer: ${answer}"
+println game.applyAnswer(solution, answer)
+println game.hasWon(solution, answer)
+println "---"
+
+answer += 'e'
+println score = game.getNewScore(solution, answer, score)
+println "answer: ${answer}"
+println game.applyAnswer(solution, answer)
+println game.hasWon(solution, answer)
+
+
 println "------------"
