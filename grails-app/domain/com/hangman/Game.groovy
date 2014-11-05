@@ -5,5 +5,6 @@ class Game {
 	String solution
 
     static constraints = {
+    	solution nullable: false, blank: false
     }
 }

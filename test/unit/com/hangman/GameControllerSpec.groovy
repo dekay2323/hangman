@@ -11,20 +11,24 @@ import spock.lang.*
 @Mock(Game)
 class GameControllerSpec extends Specification {
 
-    def populateValidParams(params) {
-        assert params != null
-        // TODO: Populate valid properties like...
-        //params['name'] = 'someValidName'
+    def setup() {
+
     }
 
     void "Test the index action returns the correct model"() {
 
         when:"The index action is executed"
+            def game = new Game(user: "Demian", solution: "testtest")
+			game.save(flush: true)
+			game = new Game(user: "Carrie", solution: "Tiberius")
+			game.save(flush: true)
             controller.index()
 
         then:"The response is correct"
             response.status == OK.value
-            response.text == ([] as JSON).toString()
+        	def jsonResponse = JSON.parse(response.text)
+        	jsonResponse.size() == 2      
+        	jsonResponse.find {it.user == "Carrie"} != null            
     }
 
     void "Test the save action correctly persists an instance"() {
@@ -33,6 +37,7 @@ class GameControllerSpec extends Specification {
             // Make sure the domain class has at least one non-null property
             // or this test will fail.
             def game = new Game()
+            request.method = 'POST'
             controller.save(game)
 
         then:"The response status is NOT_ACCEPTABLE"
@@ -40,8 +45,7 @@ class GameControllerSpec extends Specification {
 
         when:"The save action is executed with a valid instance"
             response.reset()
-            populateValidParams(params)
-            game = new Game(params)
+            game = new Game(user: "Andy", solution: "Spock")
 
             controller.save(game)
 
@@ -52,6 +56,7 @@ class GameControllerSpec extends Specification {
 
     void "Test the update action performs an update on a valid domain instance"() {
         when:"Update is called for a domain instance that doesn't exist"
+        	request.method = 'PUT'
             controller.update(null)
 
         then:"The response status is NOT_FOUND"
@@ -67,8 +72,7 @@ class GameControllerSpec extends Specification {
 
         when:"A valid domain instance is passed to the update action"
             response.reset()
-            populateValidParams(params)
-            game = new Game(params).save(flush: true)
+            game = new Game(user: "Andy", solution: "Spock").save(flush: true)
             controller.update(game)
 
         then:"The response status is OK and the updated instance is returned"
@@ -78,6 +82,7 @@ class GameControllerSpec extends Specification {
 
     void "Test that the delete action deletes an instance if it exists"() {
         when:"The delete action is called for a null instance"
+            request.method = 'DELETE'
             controller.delete(null)
 
         then:"A NOT_FOUND is returned"
@@ -85,8 +90,7 @@ class GameControllerSpec extends Specification {
 
         when:"A domain instance is created"
             response.reset()
-            populateValidParams(params)
-            def game = new Game(params).save(flush: true)
+            def game = new Game(user: "Andy", solution: "Spock").save(flush: true)
 
         then:"It exists"
             Game.count() == 1
