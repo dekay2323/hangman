@@ -23,4 +23,6 @@
 	- Decent results with regualr expressions, but collections with interesctions and stuffs probably better
 - Lets retry with more functional ideas
 	- Definitely getting somewhere
+- Abstract factory? Seems quite felxible in this case
+	- Service or just groovy
 	
