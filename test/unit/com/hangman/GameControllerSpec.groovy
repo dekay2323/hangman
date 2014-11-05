@@ -14,9 +14,9 @@ import grails.converters.JSON
 class GameControllerSpec extends Specification {
 
     def setup() {
-    	def game1 = new Game(user: "Demian")
+    	def game1 = new Game(user: "Demian", solution: "testtest")
 		game1.save(flush: true)
-		game1 = new Game(user: "Carrie")
+		game1 = new Game(user: "Carrie", solution: "Tiberius")
 		game1.save(flush: true)
     }
 
@@ -49,5 +49,18 @@ class GameControllerSpec extends Specification {
 
         def jsonResponse = JSON.parse(response.text)
         jsonResponse.user == "Carrie"
+    }
+
+
+    void 'test render create'() {
+        when:
+    	params.user = "Andy"
+    	params.solution = "Spock"
+    	request.method = 'POST'
+        controller.save()
+
+        then:
+        println "response.text ${response.text}"
+    	response.status == 201
     }
 }
