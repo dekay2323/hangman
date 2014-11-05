@@ -14,7 +14,9 @@
    - restful interface into game
    - front end can be html or other
    - game should be generic enough to handle turn based game
+   - Basical Diagram
 - Build Domain Classes
 	- Use scaffolding to see them hang together
 	- Get the basic domain classes correct
+- Fixed H2 bug in logging!
 	
