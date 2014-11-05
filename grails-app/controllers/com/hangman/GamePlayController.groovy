@@ -24,4 +24,9 @@ class GamePlayController {
     	respond game
 	}
 
+	// Make a guess
+	// http://localhost:8080/hangman/gamePlay/guess/1
+    def guess(Game gameInstance) {
+        respond gameInstance
+    }
 }
