@@ -7,7 +7,7 @@ import grails.converters.JSON
 import grails.test.mixin.*
 import spock.lang.*
 
-@TestFor(GameController)
+@TestFor(GameJsonController)
 @Mock(Game)
 class GameJsonControllerSpec extends Specification {
     

@@ -36,6 +36,7 @@
 	- Grails has changed quite a bit
 		- Playing with new rest controller
 		- New spock testing
+	- HTML an JSON version
 
 
 
