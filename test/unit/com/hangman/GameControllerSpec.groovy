@@ -25,15 +25,29 @@ class GameControllerSpec extends Specification {
 
     void 'test render index'() {
         when:
-        params.id = 1
-        controller.index(params.id)
+        controller.index()
 
         then:
-        //println "gameList = ${gameList}"
-        println "response.text = ${response?.text}"
+        println "response.text ${response.text}"
+        response.text != null
+        response.text != ""
+
         def jsonResponse = JSON.parse(response.text)
-        println "jsonResponse = ${jsonResponse}"
-        println "jsonResponse[0]?.id = ${jsonResponse[0]?.id}"
-      
+        jsonResponse.size() == 2      
+        jsonResponse.find {it.user == "Carrie"} != null
+    }
+
+    void 'test render show'() {
+        when:
+        params.id = 2
+        controller.show()
+
+        then:
+        println "response.text ${response.text}"
+        response.text != null
+        response.text != ""
+
+        def jsonResponse = JSON.parse(response.text)
+        jsonResponse.user == "Carrie"
     }
 }
