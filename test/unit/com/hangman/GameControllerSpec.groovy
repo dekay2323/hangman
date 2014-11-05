@@ -2,103 +2,141 @@ package com.hangman
 
 
 
-import static org.springframework.http.HttpStatus.*
-import grails.converters.JSON
 import grails.test.mixin.*
 import spock.lang.*
 
 @TestFor(GameController)
 @Mock(Game)
 class GameControllerSpec extends Specification {
-    
+
     def populateValidParams(params) {
         assert params != null
-		params.user = "Andy"
-		params.solution = "Spock"
-		params.question = "Who is a Vulcan"
-		return params
-    }
-
-    def setup() {
-
+        // TODO: Populate valid properties like...
+        //params["name"] = 'someValidName'
     }
 
     void "Test the index action returns the correct model"() {
 
         when:"The index action is executed"
-            def game = new Game(user: "Demian", solution: "testtest", question: "Whatever")
-			game.save(flush: true)
-			game = new Game(user: "Carrie", solution: "Tiberius", question: "Whatever")
-			game.save(flush: true)
             controller.index()
 
-        then:"The response is correct"
-            response.status == OK.value
-        	def jsonResponse = JSON.parse(response.text)
-        	jsonResponse.size() == 2      
-        	jsonResponse.find {it.user == "Carrie"} != null            
+        then:"The model is correct"
+            !model.gameInstanceList
+            model.gameInstanceCount == 0
+    }
+
+    void "Test the create action returns the correct model"() {
+        when:"The create action is executed"
+            controller.create()
+
+        then:"The model is correctly created"
+            model.gameInstance!= null
     }
 
     void "Test the save action correctly persists an instance"() {
 
         when:"The save action is executed with an invalid instance"
-            // Make sure the domain class has at least one non-null property
-            // or this test will fail.
-            def game = new Game()
+            request.contentType = FORM_CONTENT_TYPE
             request.method = 'POST'
+            def game = new Game()
+            game.validate()
             controller.save(game)
 
-        then:"The response status is NOT_ACCEPTABLE"
-            response.status == NOT_ACCEPTABLE.value
+        then:"The create view is rendered again with the correct model"
+            model.gameInstance!= null
+            view == 'create'
 
         when:"The save action is executed with a valid instance"
             response.reset()
-            game = new Game(populateValidParams(params))
+            populateValidParams(params)
+            game = new Game(params)
 
             controller.save(game)
 
-        then:"The response status is CREATED and the instance is returned"
-            response.status == CREATED.value
-            response.text == (game as JSON).toString()
+        then:"A redirect is issued to the show action"
+            response.redirectedUrl == '/game/show/1'
+            controller.flash.message != null
+            Game.count() == 1
+    }
+
+    void "Test that the show action returns the correct model"() {
+        when:"The show action is executed with a null domain"
+            controller.show(null)
+
+        then:"A 404 error is returned"
+            response.status == 404
+
+        when:"A domain instance is passed to the show action"
+            populateValidParams(params)
+            def game = new Game(params)
+            controller.show(game)
+
+        then:"A model is populated containing the domain instance"
+            model.gameInstance == game
+    }
+
+    void "Test that the edit action returns the correct model"() {
+        when:"The edit action is executed with a null domain"
+            controller.edit(null)
+
+        then:"A 404 error is returned"
+            response.status == 404
+
+        when:"A domain instance is passed to the edit action"
+            populateValidParams(params)
+            def game = new Game(params)
+            controller.edit(game)
+
+        then:"A model is populated containing the domain instance"
+            model.gameInstance == game
     }
 
     void "Test the update action performs an update on a valid domain instance"() {
         when:"Update is called for a domain instance that doesn't exist"
-        	request.method = 'PUT'
+            request.contentType = FORM_CONTENT_TYPE
+            request.method = 'PUT'
             controller.update(null)
 
-        then:"The response status is NOT_FOUND"
-            response.status == NOT_FOUND.value
+        then:"A 404 error is returned"
+            response.redirectedUrl == '/game/index'
+            flash.message != null
+
 
         when:"An invalid domain instance is passed to the update action"
             response.reset()
             def game = new Game()
+            game.validate()
             controller.update(game)
 
-        then:"The response status is NOT_ACCEPTABLE"
-            response.status == NOT_ACCEPTABLE.value
+        then:"The edit view is rendered again with the invalid instance"
+            view == 'edit'
+            model.gameInstance == game
 
         when:"A valid domain instance is passed to the update action"
             response.reset()
-            game = new Game(populateValidParams(params)).save(flush: true)
+            populateValidParams(params)
+            game = new Game(params).save(flush: true)
             controller.update(game)
 
-        then:"The response status is OK and the updated instance is returned"
-            response.status == OK.value
-            response.text == (game as JSON).toString()
+        then:"A redirect is issues to the show action"
+            response.redirectedUrl == "/game/show/$game.id"
+            flash.message != null
     }
 
     void "Test that the delete action deletes an instance if it exists"() {
         when:"The delete action is called for a null instance"
+            request.contentType = FORM_CONTENT_TYPE
             request.method = 'DELETE'
             controller.delete(null)
 
-        then:"A NOT_FOUND is returned"
-            response.status == NOT_FOUND.value
+        then:"A 404 is returned"
+            response.redirectedUrl == '/game/index'
+            flash.message != null
 
         when:"A domain instance is created"
             response.reset()
-            def game = new Game(populateValidParams(params)).save(flush: true)
+            populateValidParams(params)
+            def game = new Game(params).save(flush: true)
 
         then:"It exists"
             Game.count() == 1
@@ -108,6 +146,7 @@ class GameControllerSpec extends Specification {
 
         then:"The instance is deleted"
             Game.count() == 0
-            response.status == NO_CONTENT.value
+            response.redirectedUrl == '/game/index'
+            flash.message != null
     }
 }
