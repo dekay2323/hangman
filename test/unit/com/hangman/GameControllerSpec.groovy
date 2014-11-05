@@ -1,66 +1,101 @@
 package com.hangman
 
-import grails.test.mixin.TestMixin
-import grails.test.mixin.support.GrailsUnitTestMixin
-import spock.lang.Specification
-import grails.converters.JSON
 
-/**
- * See the API for {@link grails.test.mixin.support.GrailsUnitTestMixin} for usage instructions
- */
-@TestMixin(GrailsUnitTestMixin)
+
+import static org.springframework.http.HttpStatus.*
+import grails.converters.JSON
+import grails.test.mixin.*
+import spock.lang.*
+
 @TestFor(GameController)
-@Mock([Game])
+@Mock(Game)
 class GameControllerSpec extends Specification {
 
-    def setup() {
-    	def game1 = new Game(user: "Demian", solution: "testtest")
-		game1.save(flush: true)
-		game1 = new Game(user: "Carrie", solution: "Tiberius")
-		game1.save(flush: true)
+    def populateValidParams(params) {
+        assert params != null
+        // TODO: Populate valid properties like...
+        //params['name'] = 'someValidName'
     }
 
-    def cleanup() {
+    void "Test the index action returns the correct model"() {
+
+        when:"The index action is executed"
+            controller.index()
+
+        then:"The response is correct"
+            response.status == OK.value
+            response.text == ([] as JSON).toString()
     }
 
-    void 'test render index'() {
-        when:
-        controller.index()
+    void "Test the save action correctly persists an instance"() {
 
-        then:
-        println "response.text ${response.text}"
-        response.text != null
-        response.text != ""
+        when:"The save action is executed with an invalid instance"
+            // Make sure the domain class has at least one non-null property
+            // or this test will fail.
+            def game = new Game()
+            controller.save(game)
 
-        def jsonResponse = JSON.parse(response.text)
-        jsonResponse.size() == 2      
-        jsonResponse.find {it.user == "Carrie"} != null
+        then:"The response status is NOT_ACCEPTABLE"
+            response.status == NOT_ACCEPTABLE.value
+
+        when:"The save action is executed with a valid instance"
+            response.reset()
+            populateValidParams(params)
+            game = new Game(params)
+
+            controller.save(game)
+
+        then:"The response status is CREATED and the instance is returned"
+            response.status == CREATED.value
+            response.text == (game as JSON).toString()
     }
 
-    void 'test render show'() {
-        when:
-        params.id = 2
-        controller.show()
+    void "Test the update action performs an update on a valid domain instance"() {
+        when:"Update is called for a domain instance that doesn't exist"
+            controller.update(null)
 
-        then:
-        println "response.text ${response.text}"
-        response.text != null
-        response.text != ""
+        then:"The response status is NOT_FOUND"
+            response.status == NOT_FOUND.value
 
-        def jsonResponse = JSON.parse(response.text)
-        jsonResponse.user == "Carrie"
+        when:"An invalid domain instance is passed to the update action"
+            response.reset()
+            def game = new Game()
+            controller.update(game)
+
+        then:"The response status is NOT_ACCEPTABLE"
+            response.status == NOT_ACCEPTABLE.value
+
+        when:"A valid domain instance is passed to the update action"
+            response.reset()
+            populateValidParams(params)
+            game = new Game(params).save(flush: true)
+            controller.update(game)
+
+        then:"The response status is OK and the updated instance is returned"
+            response.status == OK.value
+            response.text == (game as JSON).toString()
     }
 
+    void "Test that the delete action deletes an instance if it exists"() {
+        when:"The delete action is called for a null instance"
+            controller.delete(null)
 
-    void 'test render create'() {
-        when:
-    	params.user = "Andy"
-    	params.solution = "Spock"
-    	request.method = 'POST'
-        controller.save()
+        then:"A NOT_FOUND is returned"
+            response.status == NOT_FOUND.value
 
-        then:
-        println "response.text ${response.text}"
-    	response.status == 201
+        when:"A domain instance is created"
+            response.reset()
+            populateValidParams(params)
+            def game = new Game(params).save(flush: true)
+
+        then:"It exists"
+            Game.count() == 1
+
+        when:"The domain instance is passed to the delete action"
+            controller.delete(game)
+
+        then:"The instance is deleted"
+            Game.count() == 0
+            response.status == NO_CONTENT.value
     }
 }
