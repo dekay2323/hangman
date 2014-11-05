@@ -33,4 +33,14 @@
 	- State probably HAS to be in due to picking up saved games (could put solution encrypted into parameter though to avoid state)
 	- User could just bookmark a game then (still can do this saving answer)
 	- Saving to database would give nice history of games played etc
+
+
+
+	#TODOLIST#
+	- 9.1.4 Versioning REST resources
+	- Griffon
+	- Code Coverage
+	- Circuit breaker
+	- Load Test
+	- Profile
 	

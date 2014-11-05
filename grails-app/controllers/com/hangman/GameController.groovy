@@ -1,5 +1,11 @@
 package com.hangman
 
-class GameController {
-    static scaffold = true
+import grails.rest.RestfulController
+
+class GameController extends RestfulController {
+    static responseFormats = ['json', 'xml']
+
+    GameController() {
+        super(Game)
+    }
 }
