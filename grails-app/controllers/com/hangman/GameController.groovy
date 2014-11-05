@@ -5,7 +5,11 @@ import grails.rest.RestfulController
 class GameController extends RestfulController {
     static responseFormats = ['json', 'xml']
 
-    GameController() {
-        super(Game)
+    def index(Integer id) {
+        respond Game.list(params), model:[gameCount: Game.count()]
+    }
+
+    def show(Game game) {
+    	respond game
     }
 }

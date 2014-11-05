@@ -1,7 +1,7 @@
 package com.hangman
 
 class Game {
-	User user 
+	String user 
 
     static constraints = {
     }
