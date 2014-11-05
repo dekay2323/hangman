@@ -8,11 +8,20 @@ class GamePlayController {
    //static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
    //static responseFormats = ['html', 'json', 'xml']
 
+   // Show available games for user
+   // http://localhost:8080/hangman/gamePlay/index?userId=1
     def index() {
-        //render (view: "index", model: [Game.get(gameId)])
         println "index() ${params}"
-        def game = Game.get(params?.id)
-        respond game
+        def games = User.get(params?.userId)?.games
+        respond games, [model: [gameInstanceList: games]]
     }
+
+
+    // Show a actual game
+    // http://localhost:8080/hangman/gamePlay/show/1
+    def show(Game game) {
+    	println "index() ${params}"
+    	respond game
+	}
 
 }
