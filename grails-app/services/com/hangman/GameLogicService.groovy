@@ -1,22 +1,19 @@
 package com.hangman
 
-import grails.transaction.Transactional
+import grails.transaction.NotTransactional
 
-@Transactional
 class GameLogicService {
+    static transactional = false
 
-    public def applyAnswer(def solution, def answers, def newAnswer, def score) {
-    	def reply = [:]
-        reply.score = score
-        if (newAnswer.intersect(solution)?.size() == 0)
-            reply.score = reply.score - 1
-        reply.answers = answers + newAnswer
-        reply.message = printer(solution, reply.answers)
-        reply.hasWon = hasWon(solution, reply.answers)
-        reply.hasLost = hasLost(score, solution, reply.answers)
-        return reply
+    public def newAnswers(def answers, def guess) {
+        return answers + guess
     }
 
+    public def calcScore(def solution, def guess, def score) {
+        if (guess.intersect(solution)?.size() == 0)
+            return score-1
+        return score
+    }
 
     public def hasWon(def solution, def answers) {
         Set solutionSet = solution as Set
@@ -27,10 +24,7 @@ class GameLogicService {
         return false
     }
     
-    public def hasLost(def score, def solution, def answers) {
-        if (hasWon(solution, answers))
-            return false
-            
+    public def hasLost(def score) {
         if (score <= 0)
             return true
             

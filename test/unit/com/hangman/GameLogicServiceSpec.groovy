@@ -53,31 +53,53 @@ class GameLogicServiceSpec extends Specification {
 
     void "Test the hasLost"() {
         when:"The score has not lost"
-        	def response = service.hasLost(1, "testtest".toList(), "txszmnbv".toList())
+        	def response = service.hasLost(1)
 
         then:"Then hasLost should be false"
 			response == false		
 
         when:"The score has lost"
-        	response = service.hasLost(0, "testtest".toList(), "t".toList())
+        	response = service.hasLost(0)
 
         then:"Then hasLost should be true"
-			response == true	
-
-        when:"The score has lost but the answer solves the solution"
-        	response = service.hasLost(1, "testtest".toList(), "tes".toList())
-
-        then:"Then hasLost should be false"
-			response == false	
+			response == true		
     }   
 
-    void "Test the applyAnswer"() {
-        when:"Single matching answer"
-        	def response = service.applyAnswer("testtest".toList(), "a".toList(), "e".toList(), 8)
+    void "Test the calcScore"() {
+        when:"Did not get a correct guess"
+        	def response = service.calcScore("testtest".toList(), "a".toList(), 8)
+
+        then:"We should see the score lower"
+			response == 7
+
+		when:"Did get a correct guess"
+        	response = service.calcScore("testtest".toList(), "s".toList(), 8)
 
         then:"We should see the score stay the same"
-			response?.score == 8
-		then:"Answers should become larger"
-			response?.answers == ['a','e']
+			response == 8
+	}    
+
+    void "Test the newAnswer"() {
+        when:"Add a new char to the answers"
+        	def response = service.newAnswers("abc".toList(), "e".toList())
+
+        then:"Should just append to end"
+			response == ['a', 'b', 'c', 'e']
+	}
+
+	void "Test USECASE: A round of play"() {
+		when:"Game starts"
+        	def score = 8
+        	def solution = "testtest".toList()
+        	def answers = "".toList()
+
+        and:"First guess is wrong"
+        	def guess = "a".toList()
+
+        then:"Answers must grow, score goes down, and you have not won nor lost"
+			service.calcScore(solution, guess, score) == 7
+        	service.hasLost(service.calcScore(solution, guess, score)) == false
+        	service.hasWon(solution, newAnswers(answers, guess)) == false
+        	service.newAnswers(answers, guess) == ['a']
 	}
 }
