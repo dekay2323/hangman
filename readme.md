@@ -25,4 +25,12 @@
 	- Definitely getting somewhere
 - Abstract factory? Seems quite felxible in this case
 	- Service or just groovy
+- Sleeping on it: I think I am trying to hard to solve business problems we do not have.
+	- System does not need to support many games
+	- Build a good robust system
+	- Found some nice collection ways of resolving solution problems
+	- Still try keep state out of it.
+	- State probably HAS to be in due to picking up saved games (could put solution encrypted into parameter though to avoid state)
+	- User could just bookmark a game then (still can do this saving answer)
+	- Saving to database would give nice history of games played etc
 	

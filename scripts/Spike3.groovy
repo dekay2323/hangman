@@ -1,7 +1,5 @@
 class HangmanGame {
     final def welcome = "This is the game of hangman"
-    final def loose = "You have lost"
-    final def win = "You have won"
     
     def applyAnswer(def solution, def answer, def newAnswer, def score) {
         def reply = [:]
