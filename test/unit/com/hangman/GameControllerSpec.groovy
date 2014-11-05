@@ -10,6 +10,14 @@ import spock.lang.*
 @TestFor(GameController)
 @Mock(Game)
 class GameControllerSpec extends Specification {
+    
+    def populateValidParams(params) {
+        assert params != null
+		params.user = "Andy"
+		params.solution = "Spock"
+		params.question = "Who is a Vulcan"
+		return params
+    }
 
     def setup() {
 
@@ -18,9 +26,9 @@ class GameControllerSpec extends Specification {
     void "Test the index action returns the correct model"() {
 
         when:"The index action is executed"
-            def game = new Game(user: "Demian", solution: "testtest")
+            def game = new Game(user: "Demian", solution: "testtest", question: "Whatever")
 			game.save(flush: true)
-			game = new Game(user: "Carrie", solution: "Tiberius")
+			game = new Game(user: "Carrie", solution: "Tiberius", question: "Whatever")
 			game.save(flush: true)
             controller.index()
 
@@ -45,7 +53,7 @@ class GameControllerSpec extends Specification {
 
         when:"The save action is executed with a valid instance"
             response.reset()
-            game = new Game(user: "Andy", solution: "Spock")
+            game = new Game(populateValidParams(params))
 
             controller.save(game)
 
@@ -72,7 +80,7 @@ class GameControllerSpec extends Specification {
 
         when:"A valid domain instance is passed to the update action"
             response.reset()
-            game = new Game(user: "Andy", solution: "Spock").save(flush: true)
+            game = new Game(populateValidParams(params)).save(flush: true)
             controller.update(game)
 
         then:"The response status is OK and the updated instance is returned"
@@ -90,7 +98,7 @@ class GameControllerSpec extends Specification {
 
         when:"A domain instance is created"
             response.reset()
-            def game = new Game(user: "Andy", solution: "Spock").save(flush: true)
+            def game = new Game(populateValidParams(params)).save(flush: true)
 
         then:"It exists"
             Game.count() == 1
