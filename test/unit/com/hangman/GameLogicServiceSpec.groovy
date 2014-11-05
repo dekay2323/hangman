@@ -99,7 +99,7 @@ class GameLogicServiceSpec extends Specification {
         then:"Answers must grow, score goes down, and you have not won nor lost"
 			service.calcScore(solution, guess, score) == 7
         	service.hasLost(service.calcScore(solution, guess, score)) == false
-        	service.hasWon(solution, newAnswers(answers, guess)) == false
+        	service.hasWon(solution, service.newAnswers(answers, guess)) == false
         	service.newAnswers(answers, guess) == ['a']
 	}
 }
