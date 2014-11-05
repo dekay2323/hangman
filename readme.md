@@ -20,4 +20,7 @@
 	- Get the basic domain classes correct
 - Fixed H2 bug in logging!
 - Going to rather spike a solution, REPL
+	- Decent results with regualr expressions, but collections with interesctions and stuffs probably better
+- Lets retry with more functional ideas
+	- Definitely getting somewhere
 	
