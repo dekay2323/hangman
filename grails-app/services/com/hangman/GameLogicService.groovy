@@ -27,6 +27,8 @@ class GameLogicService {
     * This appends the guess onto the end of the answers
     */
     Collection newAnswers(Collection answers, String guess) {
+        assert answers != null, "answers parameter should not be null"
+        assert guess != null, "guess parameter should not be null"
         answers + guess?.toLowerCase()
     }
 

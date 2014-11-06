@@ -51,9 +51,11 @@
 		- Not needed, allows flexibility, whatever is passed in just needs to implement intersect or whatever function is called upon it.
 		- More difficult for initial people to pick up, less compiler checking
 		- Decided to type them
-	** Add robustness with upfront asserts, self documenting code is nice!
+		- Power assert method exists
+	** Add robustness with upfront power asserts, self documenting code is nice!
 	- Should add is guess correct
-	
+	- Refactor tests to be more modular
+
 	- Robustify tests
 		- Test for bizarre stuff
 		- upper lower

@@ -129,4 +129,21 @@ class GameLogicServiceSpec extends Specification {
         	service.hasWon(solution, answers) == false
         	service.printer(solution, answers) == ".e...e.."
 	}
+
+    void "Test bad/null and bizarre input"() {
+        when:"All nulls"
+            def score = null
+            def solution = null
+            def answers = null
+            def guess = null
+            service.newAnswers(answers, guess)
+
+        then:"Assertion should be thrown" 
+            thrown(java.lang.AssertionError)
+            //service.calcScore(solution, guess, score) == null
+            //service.correctGuess(solution, guess) == false
+            //service.hasWon(solution, answers) == false
+           //service.hasLost(score) == false
+            //service.printer(solution, answers) == ""
+    }
 }
