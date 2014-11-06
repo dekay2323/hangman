@@ -80,7 +80,10 @@ class GameLogicService {
         solutionParam = solutionParam?.toList()
         answersParam = newAnswers(answersParam?.toList(), guessParam)?.join()
         scoreParam = calcScore(solutionParam, guessParam, scoreParam)
+        def won = hasWon(solutionParam, answersParam?.toList())
+        def lost = hasLost(scoreParam)
 
+        // Build JSON
         def builder = new groovy.json.JsonBuilder()
         return builder.gamePlay {
             if (correctGuess(solutionParam, guessParam)) {
@@ -93,12 +96,12 @@ class GameLogicService {
             score scoreParam
             answers answersParam
             currentSolution printer(solutionParam, answersParam?.toList())  
-            if (hasWon(solutionParam, answersParam?.toList())) {
+            if (won) {
                 message "You have won"
                 dateWon new Date()
             }
 
-            if (hasLost(scoreParam)) { 
+            if (lost) { 
                 message "You have lost"
                 dateLost new Date()
             }

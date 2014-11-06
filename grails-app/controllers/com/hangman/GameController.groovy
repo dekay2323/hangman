@@ -76,14 +76,10 @@ class GameController {
         // Game Logic (using JSON)
         def response = gameLogicService.gameTurnLogicJson(gameInstance.solution, gameInstance.answers, gameInstance.guess, gameInstance.score)
 
+        println response?.gamePlay
+
         // Change domain object
-        gameInstance.answers = response?.gamePlay?.answers
-        gameInstance.score = response?.gamePlay?.score
-        gameInstance.currentSolution = response?.gamePlay?.currentSolution
-        if (response?.gamePlay?.dateWon)
-            gameInstance.dateWon = response?.gamePlay?.dateWon
-        if (response?.gamePlay?.dateLost)
-            gameInstance.dateWon = response?.gamePlay?.dateLost
+        gameInstance.properties = response?.gamePlay
 
         flash.message = response?.gamePlay?.message
 

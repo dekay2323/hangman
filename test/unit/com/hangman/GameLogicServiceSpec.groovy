@@ -18,7 +18,7 @@ class GameLogicServiceSpec extends Specification {
     }
 
 
-    void "USER STORY: Two rounds of play"() {
+    void "USER STORY: Pay until win"() {
         when:"Game starts"
             def score = 8
             def solution = "testtest".toList()
@@ -26,28 +26,64 @@ class GameLogicServiceSpec extends Specification {
 
         and:"First guess is wrong"
             def guess = "a"
+            def resp = service.gameTurnLogicJson(solution, answers, guess, score)
 
         then:"Guess is wrong, answers must grow, score goes down, and you have not won nor lost"
-            service.correctGuess(solution, guess) == false
-            (score = service.calcScore(solution, guess, score)) == 7
-            service.hasLost(score) == false
-            (answers = service.newAnswers(answers, guess)) == ['a']
-            service.hasWon(solution, answers) == false
-            service.printer(solution, answers) == "........"
+ 
+            resp?.gamePlay?.correctGuess == false
+            (score = resp?.gamePlay?.score) == 7
+            resp?.gamePlay?.dateLost == null
+            (answers = resp?.gamePlay?.answers) == "a"
+            resp?.gamePlay?.dateWon == null
+            resp?.gamePlay?.currentSolution == "........"
 
         when:"Second round"
 
         and:"Second guess is correct"
             guess = "e"
+            resp = service.gameTurnLogicJson(solution, answers, guess, score)
 
         then:"Guess is correct, answers must grow, score stays the same, and you have not won nor lost"
-            service.correctGuess(solution, guess) == true        
-            (score = service.calcScore(solution, guess, score)) == 7
-            service.hasLost(score) == false
-            (answers = service.newAnswers(answers, guess)) == ['a','e']
-            service.hasWon(solution, answers) == false
-            service.printer(solution, answers) == ".e...e.."
+     
+            resp?.gamePlay?.correctGuess == true
+            (score = resp?.gamePlay?.score) == 7
+            resp?.gamePlay?.dateLost == null
+            (answers = resp?.gamePlay?.answers) == "ae"
+            resp?.gamePlay?.dateWon == null
+            resp?.gamePlay?.currentSolution == ".e...e.."
+
+        when:"Third round"
+
+        and:"Third guess is correct"
+            guess = "s"
+            resp = service.gameTurnLogicJson(solution, answers, guess, score)
+
+        then:"Guess is correct, answers must grow, score stays the same, and you have not won nor lost"
+     
+            resp?.gamePlay?.correctGuess == true
+            (score = resp?.gamePlay?.score) == 7
+            resp?.gamePlay?.dateLost == null
+            (answers = resp?.gamePlay?.answers) == "aes"
+            resp?.gamePlay?.dateWon == null
+            resp?.gamePlay?.currentSolution == ".es..es."
+
+        when:"Third round"
+
+        and:"Third guess is correct"
+            guess = "t"
+            resp = service.gameTurnLogicJson(solution, answers, guess, score)
+
+        then:"Guess is correct, answers must grow, score stays the same, and you have not won nor lost"
+     
+            resp?.gamePlay?.correctGuess == true
+            (score = resp?.gamePlay?.score) == 7
+            resp?.gamePlay?.dateLost == null
+            (answers = resp?.gamePlay?.answers) == "aest"
+            resp?.gamePlay?.dateWon != null
+            resp?.gamePlay?.currentSolution == "testtest"
     }
+
+
 
 
     void "printer(solution, answers) answers has no overlap with solution"() {

@@ -24,9 +24,9 @@ class BootStrap {
 			user1.save(flush: true)
 			def user2 = new User(name: "Carrie")
 			user2.save(flush: true)               
-   			def game = new Game(user: user1, solution: "testest", question: "Whatever")
+   			def game = new Game(user: user1, solution: "Tiberius", question: "Captain Kirk's middle name?")
 			game.save(flush: true)
-			game = new Game(user: user2, solution: "Tiberius", question: "Whatever")
+			game = new Game(user: user2, solution: "Vulcan", question: "Spock's birth planet?")
 			game.save(flush: true)            
         }
 
