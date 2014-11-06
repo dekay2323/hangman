@@ -47,14 +47,15 @@
 				</g:eachError>
 			</ul>
 			</g:hasErrors>
-			<g:form url="[resource:gameInstance, action:'update']" method="PUT" >
+			<g:form url="[resource:gameInstance, controller:'gamePlay', action:'update']" method="PUT" >
 				<g:hiddenField name="version" value="${gameInstance?.version}" />
 				<fieldset class="form">
-						<label for="answers">
-							Your guess:
+					<div class="fieldcontain ${hasErrors(bean: gameInstance, field: 'guess', 'error')} ">
+						<label for="guess">
+							<g:message code="game.guess.label" default="Guess" />		
 						</label>
-						<g:textField name="guess" value="${guess}"/>
-					</div>
+						<g:textField name="guess" maxlength="1" value="${gameInstance?.guess}"/>
+					</div>				
 				</fieldset>
 				<fieldset class="buttons">
 					<g:actionSubmit class="save" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" />

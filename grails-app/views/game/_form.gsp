@@ -29,6 +29,15 @@
 
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: gameInstance, field: 'guess', 'error')} ">
+	<label for="guess">
+		<g:message code="game.guess.label" default="Guess" />
+		
+	</label>
+	<g:textField name="guess" maxlength="1" value="${gameInstance?.guess}"/>
+
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: gameInstance, field: 'score', 'error')} required">
 	<label for="score">
 		<g:message code="game.score.label" default="Score" />

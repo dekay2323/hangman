@@ -5,7 +5,7 @@ import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
 class GamePlayController {
-   //static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+   static allowedMethods = [guess: "PUT"]
    //static responseFormats = ['html', 'json', 'xml']
 
    // Show available games for user
@@ -17,16 +17,35 @@ class GamePlayController {
     }
 
 
-    // Show a actual game
+    // Show the game
     // http://localhost:8080/hangman/gamePlay/show/1
     def show(Game game) {
     	println "index() ${params}"
     	respond game
 	}
 
-	// Make a guess
-	// http://localhost:8080/hangman/gamePlay/guess/1
+
+    @Transactional
     def guess(Game gameInstance) {
-        respond gameInstance
-    }
+        println "update()"
+        if (gameInstance == null) {
+            notFound()
+            return
+        }
+
+        if (gameInstance.hasErrors()) {
+            respond gameInstance.errors, view:'edit'
+            return
+        }
+
+        gameInstance.save flush:true
+
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'Game.label', default: 'Game'), gameInstance.id])
+                redirect gameInstance
+            }
+            '*'{ respond gameInstance, [status: OK] }
+        }
+    }    
 }

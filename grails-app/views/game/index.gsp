@@ -30,6 +30,8 @@
 					
 						<g:sortableColumn property="answers" title="${message(code: 'game.answers.label', default: 'Answers')}" />
 					
+						<g:sortableColumn property="guess" title="${message(code: 'game.guess.label', default: 'Guess')}" />
+					
 						<g:sortableColumn property="score" title="${message(code: 'game.score.label', default: 'Score')}" />
 					
 						<th><g:message code="game.user.label" default="User" /></th>
@@ -45,6 +47,8 @@
 						<td>${fieldValue(bean: gameInstance, field: "question")}</td>
 					
 						<td>${fieldValue(bean: gameInstance, field: "answers")}</td>
+					
+						<td>${fieldValue(bean: gameInstance, field: "guess")}</td>
 					
 						<td>${fieldValue(bean: gameInstance, field: "score")}</td>
 					
