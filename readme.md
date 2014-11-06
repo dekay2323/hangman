@@ -44,6 +44,21 @@
 	- Build gameplay controller to play game
 
 
+	DAY 2
+	- Uppercase/lowercase should not matter
+	- New Grails doc, Groovydoc api, should be using
+	** Internal debate of typeing method parameters.
+		- Not needed, allows flexibility, whatever is passed in just needs to implement intersect or whatever function is called upon it.
+		- More difficult for initial people to pick up, less compiler checking
+		- Decided to type them
+	** Add robustness with upfront asserts, self documenting code is nice!
+
+	- Robustify tests
+		- Test for bizarre stuff
+		- upper lower
+		- nulls
+
+
 
 	#TODOLIST#
 	- 9.1.4 Versioning REST resources

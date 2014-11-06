@@ -67,13 +67,13 @@ class GameLogicServiceSpec extends Specification {
 
     void "Test the calcScore"() {
         when:"Did not get a correct guess"
-        	def response = service.calcScore("testtest".toList(), "a".toList(), 8)
+        	def response = service.calcScore("testtest".toList(), "a", 8)
 
         then:"We should see the score lower"
 			response == 7
 
 		when:"Did get a correct guess"
-        	response = service.calcScore("testtest".toList(), "s".toList(), 8)
+        	response = service.calcScore("testtest".toList(), "s", 8)
 
         then:"We should see the score stay the same"
 			response == 8
@@ -81,10 +81,10 @@ class GameLogicServiceSpec extends Specification {
 
     void "Test the newAnswer"() {
         when:"Add a new char to the answers"
-        	def response = service.newAnswers("abc".toList(), "e".toList())
+        	def response = service.newAnswers("abc".toList(), "d")
 
         then:"Should just append to end"
-			response == ['a', 'b', 'c', 'e']
+			response == ['a', 'b', 'c', 'd']
 	}
 
 	void "Test USECASE: A round of play"() {
@@ -94,7 +94,7 @@ class GameLogicServiceSpec extends Specification {
         	def answers = "".toList()
 
         and:"First guess is wrong"
-        	def guess = "a".toList()
+        	def guess = "a"
 
         then:"Answers must grow, score goes down, and you have not won nor lost"
 			(score = service.calcScore(solution, guess, score)) == 7
@@ -106,7 +106,7 @@ class GameLogicServiceSpec extends Specification {
         when:"Second round"
 
         and:"Second guess is correct"
-            guess = "e".toList()
+            guess = "e"
 
         then:"Answers must grow, score stays the same, and you have not won nor lost"
 			(score = service.calcScore(solution, guess, score)) == 7
