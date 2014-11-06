@@ -61,9 +61,9 @@ class GameLogicService {
     }
     
     String printer(Collection solution, Collection answers) {
-       solution.collect {
-       if (answers?.contains(it))
-           return it
+       solution.collect { solVar ->
+       if (answers?.find {it?.toLowerCase() == solVar?.toLowerCase()} > 0)
+           return solVar
        else
            return '.'
         }?.join()

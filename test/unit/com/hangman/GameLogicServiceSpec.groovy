@@ -17,133 +17,143 @@ class GameLogicServiceSpec extends Specification {
     def cleanup() {
     }
 
-    void "Test the printer"() {
-        when:"The answer has no overlap with solution"
-        	def response = service.printer("testtest".toList(), "xzv".toList())
 
-        then:"There are no shown characters"
-			response == "........"       
-
-		when:"The answer has some overlap with solution" 
-			response = service.printer("testtest".toList(), "et".toList())
-
-        then:"There are some charachters shown"
-			response == "te.tte.t"      	
-
-		when:"The answer has complete overlap with solution" 
-			response = service.printer("testtest".toList(), "ets".toList())
-
-        then:"There are some charachters shown"
-			response == "testtest"      	
-    }
-
-    void "Test the hasWon"() {
-        when:"The answer has not won"
-        	def response = service.hasWon("testtest".toList(), "txszmnbv".toList())
-
-        then:"Then hasWon should be false"
-			response == false    
-
-	    when:"The answer has won"
-        	response = service.hasWon("testtest".toList(), "txszmnbve".toList())
-
-        then:"Then hasWon should be true"
-			response == true    		
-    }    
-
-    void "Test the hasLost"() {
-        when:"The score has not lost"
-        	def response = service.hasLost(1)
-
-        then:"Then hasLost should be false"
-			response == false		
-
-        when:"The score has lost"
-        	response = service.hasLost(0)
-
-        then:"Then hasLost should be true"
-			response == true		
-    }   
-
-    void "Test the calcScore"() {
-        when:"Did not get a correct guess"
-        	def response = service.calcScore("testtest".toList(), "a", 8)
-
-        then:"We should see the score lower"
-			response == 7
-
-		when:"Did get a correct guess"
-        	response = service.calcScore("testtest".toList(), "s", 8)
-
-        then:"We should see the score stay the same"
-			response == 8
-	}    
-
-    void "Test the correctGuess"() {
-        when:"Did not get a correct guess"
-            def response = service.correctGuess("testtest".toList(), "a")
-
-        then:"We should see false"
-            response == false
-
-        when:"Did get a correct guess"
-            response = service.correctGuess("testtest".toList(), "s")
-
-        then:"WWe should see true"
-            response == true
-    }      
-
-    void "Test the newAnswer"() {
-        when:"Add a new char to the answers"
-        	def response = service.newAnswers("abc".toList(), "d")
-
-        then:"Should just append to end"
-			response == ['a', 'b', 'c', 'd']
-	}
-
-	void "Test USECASE: A round of play"() {
-		when:"Game starts"
-        	def score = 8
-        	def solution = "testtest".toList()
-        	def answers = "".toList()
+    void "USER STORY: Two rounds of play"() {
+        when:"Game starts"
+            def score = 8
+            def solution = "testtest".toList()
+            def answers = "".toList()
 
         and:"First guess is wrong"
-        	def guess = "a"
+            def guess = "a"
 
-        then:"Answers must grow, score goes down, and you have not won nor lost"
-			(score = service.calcScore(solution, guess, score)) == 7
-        	service.hasLost(score) == false
-        	(answers = service.newAnswers(answers, guess)) == ['a']
-        	service.hasWon(solution, answers) == false
-        	service.printer(solution, answers) == "........"
+        then:"Guess is wrong, answers must grow, score goes down, and you have not won nor lost"
+            service.correctGuess(solution, guess) == false
+            (score = service.calcScore(solution, guess, score)) == 7
+            service.hasLost(score) == false
+            (answers = service.newAnswers(answers, guess)) == ['a']
+            service.hasWon(solution, answers) == false
+            service.printer(solution, answers) == "........"
 
         when:"Second round"
 
         and:"Second guess is correct"
             guess = "e"
 
-        then:"Answers must grow, score stays the same, and you have not won nor lost"
-			(score = service.calcScore(solution, guess, score)) == 7
-        	service.hasLost(score) == false
-        	(answers = service.newAnswers(answers, guess)) == ['a','e']
-        	service.hasWon(solution, answers) == false
-        	service.printer(solution, answers) == ".e...e.."
+        then:"Guess is correct, answers must grow, score stays the same, and you have not won nor lost"
+            service.correctGuess(solution, guess) == true        
+            (score = service.calcScore(solution, guess, score)) == 7
+            service.hasLost(score) == false
+            (answers = service.newAnswers(answers, guess)) == ['a','e']
+            service.hasWon(solution, answers) == false
+            service.printer(solution, answers) == ".e...e.."
+    }
+
+
+    void "printer(solution, answers) answers has no overlap with solution"() {
+        when:
+            def response = service.printer("testtest".toList(), "xzv".toList())
+
+        then:"There are no shown characters"
+			response == "........"    
+    }
+    void "printer(solution, answers) answers has some overlap with solution"() {
+		when:
+			def response = service.printer("testtest".toList(), "eti".toList())
+
+        then:"There are some characters shown"
+			response == "te.tte.t"  
+    }    	
+    void "printer(solution, answers) answers has 100% complete overlap with solution"() {
+		when: 
+			def response = service.printer("testtest".toList(), "ets".toList())
+
+        then:"There are some charachters shown"
+			response == "testtest"      	
+    }
+
+    void "hasWon(solution, answers) answers has not won"() {
+        when:
+        	def response = service.hasWon("testtest".toList(), "txszmnbv".toList())
+
+        then:"Then hasWon should be false"
+			response == false    
+    }
+    void "hasWon(solution, answers) answers has won"() {
+	    when:
+        	def response = service.hasWon("testtest".toList(), "txszmnbve".toList())
+
+        then:"Then hasWon should be true"
+			response == true    		
+    }    
+
+    void "ThasLost(score) score has not lost"() {
+        when:
+        	def response = service.hasLost(1)
+
+        then:"Then hasLost should be false"
+			response == false	
+    }	
+    void "hasLost(score) score has lost"() {
+        when:
+        	def response = service.hasLost(0)
+
+        then:"Then hasLost should be true"
+			response == true		
+    }   
+
+    void "calcScore(solution, guess, score) did not get a correct guess"() {
+        when:
+        	def response = service.calcScore("testtest".toList(), "a", 8)
+
+        then:"We should see the score lower"
+			response == 7
+        }
+    void "calcScore(solution, guess, score) Did get a correct guess"() {
+		when:
+        	def response = service.calcScore("testtest".toList(), "s", 8)
+
+        then:"We should see the score stay the same"
+			response == 8
+	}    
+
+    void "correctGuess(solution, guess, score) Did not get a correct guess"() {
+        when:
+            def response = service.correctGuess("testtest".toList(), "a")
+
+        then:"We should see false"
+            response == false
+    }
+    void "correctGuess(solution, guess, score) Did get a correct guess"() {
+        when:
+            def response = service.correctGuess("testtest".toList(), "s")
+
+        then:"We should see true"
+            response == true
+    }      
+
+    void "newAnswer(answers, guess) Add a new char to the answers"() {
+        when:
+        	def response = service.newAnswers("abc".toList(), "d")
+
+        then:"Should just append to end"
+			response == ['a', 'b', 'c', 'd']
 	}
 
-    void "Test bad/null and bizarre input"() {
-        when:"All nulls"
-            def score = null
-            def solution = null
-            def answers = null
-            def guess = null
-            service.newAnswers(answers, guess)
+    void "Upper and lowercase solution and answers should make no difference"() {
+        when:
+            def solution = "Aba".toList()
 
-        then:"Assertion should be thrown" 
-            thrown(java.lang.AssertionError)
-            //service.calcScore(solution, guess, score) == null
-            //service.correctGuess(solution, guess) == false
-            //service.hasWon(solution, answers) == false
-           //service.hasLost(score) == false
-            //service.printer(solution, answers) == ""
+        then:"Should ignore uppercase/lowercase"
+            service.newAnswers(solution, 'C') == service.newAnswers(solution, 'c')
+            service.newAnswers(solution, 'c') == service.newAnswers(solution, 'c')
+            service.correctGuess(solution, 'a') == true
+            service.correctGuess(solution, 'A') == true
+            service.correctGuess(solution, 'C') == false
+            service.calcScore(solution, 'A', 1) == 1
+            service.calcScore(solution, 'a', 1) == 1
+            service.printer(solution, 'A'.toList()) == "A.a"
+            service.printer(solution, 'a'.toList()) == "A.a"
+            service.printer(solution, 'B'.toList()) == ".b."            
     }
 }
