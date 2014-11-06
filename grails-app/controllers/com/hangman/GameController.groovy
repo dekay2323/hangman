@@ -4,6 +4,7 @@ package com.hangman
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
+import grails.converters.JSON
 
 @Transactional(readOnly = true)
 class GameController {
@@ -73,7 +74,9 @@ class GameController {
         }
 
         // Game Logic (using JSON)
-        def response = gameLogicJson(gameInstance)
+        def response = gameLogicJson(gameInstance.solution, gameInstance.answers, gameInstance.guess, gameInstance.score)
+
+        // Change domain object
         gameInstance.answers = response?.gamePlay?.answers
         gameInstance.score = response?.gamePlay?.score
         gameInstance.currentSolution = response?.gamePlay?.currentSolution
@@ -129,36 +132,45 @@ class GameController {
         }
     }
 
-    private def gameLogicJson(def gameInstance) {
-        def solution = gameInstance.solution?.toList()
-        def guess = gameInstance.guess
-        def ans = gameLogicService.newAnswers(gameInstance.answers?.toList(), guess)?.join()
+    // http://localhost:8080/hangman/game/gameLogic?solution=Aba&answers=&guess=a&score=3
+    def gameLogic() {
+        println "params ${params}"
+
+        def resp = gameLogicJson(params?.solution, params?.answers, params?.guess, params?.score?.toInteger())
+        render resp as JSON
+    }
+
+    private def gameLogicJson(def solutionParam, def answersParam, def guessParam, def scoreParam) {
+        solutionParam = solutionParam?.toList()
+        answersParam = gameLogicService.newAnswers(answersParam?.toList(), guessParam)?.join()
+        scoreParam = gameLogicService.calcScore(solutionParam, guessParam, scoreParam)
 
         def builder = new groovy.json.JsonBuilder()
         return builder.gamePlay {
-            if (gameLogicService.correctGuess(solution, guess)) {
+            if (gameLogicService.correctGuess(solutionParam, guessParam)) {
                 message "You guessed correct"
                 correctGuess true
             } else {
                 message "You guessed wrong"
                 correctGuess false
             }
-            score gameLogicService.calcScore(solution, guess, gameInstance.score)
-            answers ans
-            currentSolution gameLogicService.printer(solution, ans?.toList())  
-            if (gameLogicService.hasWon(solution, ans?.toList())) {
+            score scoreParam
+            answers answersParam
+            currentSolution gameLogicService.printer(solutionParam, answersParam?.toList())  
+            if (gameLogicService.hasWon(solutionParam, answersParam?.toList())) {
                 message "You have won"
                 dateWon new Date()
             }
 
-            if (gameLogicService.hasLost(gameInstance.score)) { 
+            if (gameLogicService.hasLost(scoreParam)) { 
                 message "You have lost"
                 dateLost new Date()
             }
         }
     }
 
-    private void gameLogic(def gameInstance, def flash) {
+
+  /*  private void gameLogic(def gameInstance, def flash) {
         assert gameInstance != null, "GameInstance should not be null"
         // Actual game logic
         def solution = gameInstance.solution?.toList()
@@ -181,5 +193,5 @@ class GameController {
             flash.message = "You have lost"
             gameInstance.dateLost = new Date()
         }
-    }
+    }*/
 }
