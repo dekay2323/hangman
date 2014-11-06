@@ -85,10 +85,18 @@
 				</g:if>
 			
 			</ol>
-			<g:form url="[resource:gameInstance, action:'delete']" method="DELETE">
+			<g:form url="[resource:gameInstance, controller:'gamePlay', action:'guess']" method="PUT" >
+				<g:hiddenField name="version" value="${gameInstance?.version}" />
+				<fieldset class="form">
+					<div class="fieldcontain ${hasErrors(bean: gameInstance, field: 'guess', 'error')} ">
+						<label for="guess">
+							<g:message code="game.guess.label" default="Guess" />		
+						</label>
+						<g:textField name="guess" maxlength="1" value="${gameInstance?.guess}"/>
+					</div>				
+				</fieldset>
 				<fieldset class="buttons">
-					<g:link class="edit" action="edit" resource="${gameInstance}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
-					<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+					<g:actionSubmit class="save" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" />
 				</fieldset>
 			</g:form>
 		</div>

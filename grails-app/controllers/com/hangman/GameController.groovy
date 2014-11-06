@@ -10,11 +10,23 @@ class GameController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    // list all games
+    // ttp://localhost:8080/hangman/game/index
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Game.list(params), model:[gameInstanceCount: Game.count()]
     }
 
+    // Show available games for user
+   // http://localhost:8080/hangman/game/listgame?userId=1
+    def forUser() {
+        println "index() ${params}"
+        def games = User.get(params?.id)?.games
+        respond games, [model: [gameInstanceList: games]]
+    }
+
+    // Show the game
+    // http://localhost:8080/hangman/game/show/1
     def show(Game gameInstance) {
         respond gameInstance
     }
