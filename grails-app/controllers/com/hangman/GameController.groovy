@@ -74,7 +74,7 @@ class GameController {
         }
 
         // Game Logic (using JSON)
-        def response = gameLogicJson(gameInstance.solution, gameInstance.answers, gameInstance.guess, gameInstance.score)
+        def response = gameLogicService.gameTurnLogicJson(gameInstance.solution, gameInstance.answers, gameInstance.guess, gameInstance.score)
 
         // Change domain object
         gameInstance.answers = response?.gamePlay?.answers
@@ -140,34 +140,7 @@ class GameController {
         render resp as JSON
     }
 
-    private def gameLogicJson(def solutionParam, def answersParam, def guessParam, def scoreParam) {
-        solutionParam = solutionParam?.toList()
-        answersParam = gameLogicService.newAnswers(answersParam?.toList(), guessParam)?.join()
-        scoreParam = gameLogicService.calcScore(solutionParam, guessParam, scoreParam)
 
-        def builder = new groovy.json.JsonBuilder()
-        return builder.gamePlay {
-            if (gameLogicService.correctGuess(solutionParam, guessParam)) {
-                message "You guessed correct"
-                correctGuess true
-            } else {
-                message "You guessed wrong"
-                correctGuess false
-            }
-            score scoreParam
-            answers answersParam
-            currentSolution gameLogicService.printer(solutionParam, answersParam?.toList())  
-            if (gameLogicService.hasWon(solutionParam, answersParam?.toList())) {
-                message "You have won"
-                dateWon new Date()
-            }
-
-            if (gameLogicService.hasLost(scoreParam)) { 
-                message "You have lost"
-                dateLost new Date()
-            }
-        }
-    }
 
 
   /*  private void gameLogic(def gameInstance, def flash) {

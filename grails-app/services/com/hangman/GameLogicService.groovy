@@ -69,4 +69,39 @@ class GameLogicService {
            return '.'
         }?.join()
     }
+
+    /**
+    * Core game play turn logic which
+    *
+    * 
+    * @return JSON result set
+    */
+    def gameTurnLogicJson(def solutionParam, def answersParam, def guessParam, def scoreParam) {
+        solutionParam = solutionParam?.toList()
+        answersParam = newAnswers(answersParam?.toList(), guessParam)?.join()
+        scoreParam = calcScore(solutionParam, guessParam, scoreParam)
+
+        def builder = new groovy.json.JsonBuilder()
+        return builder.gamePlay {
+            if (correctGuess(solutionParam, guessParam)) {
+                message "You guessed correct"
+                correctGuess true
+            } else {
+                message "You guessed wrong"
+                correctGuess false
+            }
+            score scoreParam
+            answers answersParam
+            currentSolution printer(solutionParam, answersParam?.toList())  
+            if (hasWon(solutionParam, answersParam?.toList())) {
+                message "You have won"
+                dateWon new Date()
+            }
+
+            if (hasLost(scoreParam)) { 
+                message "You have lost"
+                dateLost new Date()
+            }
+        }
+    }
 }
