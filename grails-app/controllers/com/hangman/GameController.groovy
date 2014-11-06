@@ -9,6 +9,8 @@ import grails.transaction.Transactional
 class GameController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    
+    def gameLogicService
 
     // list all games
     // ttp://localhost:8080/hangman/game/index
@@ -64,10 +66,18 @@ class GameController {
 
     @Transactional
     def update(Game gameInstance) {
+        println "update() ${gameInstance}"
         if (gameInstance == null) {
             notFound()
             return
         }
+
+        // Actual game logic
+        gameInstance.score = gameLogicService.calcScore(gameInstance.solution?.toList(), gameInstance.guess?.toList(), gameInstance.score)
+        // service.hasLost(score)
+        gameInstance.answers = gameLogicService.newAnswers(gameInstance.answers, gameInstance.guess?.toList())
+        //service.hasWon(solution, answers) == false
+        gameInstance.currentSolution = gameLogicService.printer(gameInstance.solution?.toList(), gameInstance.answers?.toList())      
 
         if (gameInstance.hasErrors()) {
             respond gameInstance.errors, view:'edit'
