@@ -47,6 +47,24 @@
 
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: gameInstance, field: 'dateWon', 'error')} ">
+	<label for="dateWon">
+		<g:message code="game.dateWon.label" default="Date Won" />
+		
+	</label>
+	<g:datePicker name="dateWon" precision="day"  value="${gameInstance?.dateWon}" default="none" noSelection="['': '']" />
+
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: gameInstance, field: 'dateStarted', 'error')} required">
+	<label for="dateStarted">
+		<g:message code="game.dateStarted.label" default="Date Started" />
+		<span class="required-indicator">*</span>
+	</label>
+	<g:datePicker name="dateStarted" precision="day"  value="${gameInstance?.dateStarted}"  />
+
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: gameInstance, field: 'score', 'error')} required">
 	<label for="score">
 		<g:message code="game.score.label" default="Score" />

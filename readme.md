@@ -60,11 +60,19 @@
 		- Test for bizarre stuff
 		- upper lower
 		- nulls
+	** Do a version that has upper and lower case differences
+	- Adding the dates for win and loose
+		- Getting win and loose conditions to work
+	** Any user can play game, game state is saved via URL
+		- If we had turns could use url
+		/show/1?turn=2
+	- SPIKE to figure out how to return clean json instead of all the method calls in the builder
 
 
 
 	#TODOLIST#
 	- 9.1.4 Versioning REST resources
+	- REST
 	- Griffon
 	- Code Coverage
 	- Circuit breaker

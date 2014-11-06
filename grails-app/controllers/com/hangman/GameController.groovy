@@ -9,11 +9,11 @@ import grails.transaction.Transactional
 class GameController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
-    
-    def gameLogicService
+
+  	def gameLogicService
 
     // list all games
-    // ttp://localhost:8080/hangman/game/index
+    // http://localhost:8080/hangman/game/index
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Game.list(params), model:[gameInstanceCount: Game.count()]
@@ -72,13 +72,19 @@ class GameController {
             return
         }
 
-        // Actual game logic
-        gameInstance.score = gameLogicService.calcScore(gameInstance.solution?.toList(), gameInstance.guess, gameInstance.score)
-        // service.hasLost(score)
-        gameInstance.answers = gameLogicService.newAnswers(gameInstance.answers?.toList(), gameInstance.guess)?.join()
-        //service.hasWon(solution, answers) == false
-        gameInstance.currentSolution = gameLogicService.printer(gameInstance.solution?.toList(), gameInstance.answers?.toList())      
+        // Game Logic (using JSON)
+        def response = gameLogicJson(gameInstance)
+        gameInstance.answers = response?.gamePlay?.answers
+        gameInstance.score = response?.gamePlay?.score
+        gameInstance.currentSolution = response?.gamePlay?.currentSolution
+        if (response?.gamePlay?.dateWon)
+            gameInstance.dateWon = response?.gamePlay?.dateWon
+        if (response?.gamePlay?.dateLost)
+            gameInstance.dateWon = response?.gamePlay?.dateLost
 
+        flash.message = response?.gamePlay?.message
+
+        // Try and save the Game ORM
         if (gameInstance.hasErrors()) {
             respond gameInstance.errors, view:'edit'
             return
@@ -88,7 +94,6 @@ class GameController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'Game.label', default: 'Game'), gameInstance.id])
                 redirect gameInstance
             }
             '*'{ respond gameInstance, [status: OK] }
@@ -121,6 +126,60 @@ class GameController {
                 redirect action: "index", method: "GET"
             }
             '*'{ render status: NOT_FOUND }
+        }
+    }
+
+    private def gameLogicJson(def gameInstance) {
+        def solution = gameInstance.solution?.toList()
+        def guess = gameInstance.guess
+        def ans = gameLogicService.newAnswers(gameInstance.answers?.toList(), guess)?.join()
+
+        def builder = new groovy.json.JsonBuilder()
+        return builder.gamePlay {
+            if (gameLogicService.correctGuess(solution, guess)) {
+                message "You guessed correct"
+                correctGuess true
+            } else {
+                message "You guessed wrong"
+                correctGuess false
+            }
+            score gameLogicService.calcScore(solution, guess, gameInstance.score)
+            answers ans
+            currentSolution gameLogicService.printer(solution, ans?.toList())  
+            if (gameLogicService.hasWon(solution, ans?.toList())) {
+                message "You have won"
+                dateWon new Date()
+            }
+
+            if (gameLogicService.hasLost(gameInstance.score)) { 
+                message "You have lost"
+                dateLost new Date()
+            }
+        }
+    }
+
+    private void gameLogic(def gameInstance, def flash) {
+        assert gameInstance != null, "GameInstance should not be null"
+        // Actual game logic
+        def solution = gameInstance.solution?.toList()
+        def guess = gameInstance.guess
+
+        if (gameLogicService.correctGuess(solution, guess))
+            flash.message = "You guessed a letter correctly"
+        else
+            flash.message = "Wrong guess"
+
+        gameInstance.score = gameLogicService.calcScore(solution, guess, gameInstance.score)
+        gameInstance.answers = gameLogicService.newAnswers(gameInstance.answers?.toList(), guess)?.join()
+        gameInstance.currentSolution = gameLogicService.printer(solution, gameInstance.answers?.toList())  
+        if (gameLogicService.hasWon(solution, gameInstance.answers?.toList())) {
+            flash.message = "You have won"
+            gameInstance.dateWon = new Date()
+        }
+
+        if (gameLogicService.hasLost(gameInstance.score)) { 
+            flash.message = "You have lost"
+            gameInstance.dateLost = new Date()
         }
     }
 }

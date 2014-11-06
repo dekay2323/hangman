@@ -66,6 +66,29 @@
 				</li>
 				</g:if>
 			
+				<li class="fieldcontain">
+					<span id="dateWon-label" class="property-label"><g:message code="game.dateWon.label" default="Date Won" /></span>
+					
+						<span class="property-value" aria-labelledby="dateWon-label"><g:formatDate date="${gameInstance?.dateWon}" /></span>
+					
+				</li>
+
+				<li class="fieldcontain">
+					<span id="dateLost-label" class="property-label"><g:message code="game.dateLost.label" default="Date Lost" /></span>
+					
+						<span class="property-value" aria-labelledby="dateLost-label"><g:formatDate date="${gameInstance?.dateLost}" /></span>
+					
+				</li>		
+
+				<g:if test="${gameInstance?.dateStarted}">
+				<li class="fieldcontain">
+					<span id="dateStarted-label" class="property-label"><g:message code="game.dateStarted.label" default="Date Started" /></span>
+					
+						<span class="property-value" aria-labelledby="dateStarted-label"><g:formatDate date="${gameInstance?.dateStarted}" /></span>
+					
+				</li>
+				</g:if>
+			
 				<g:if test="${gameInstance?.score}">
 				<li class="fieldcontain">
 					<span id="score-label" class="property-label"><g:message code="game.score.label" default="Score" /></span>
