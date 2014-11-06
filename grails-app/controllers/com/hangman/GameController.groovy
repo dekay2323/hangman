@@ -73,9 +73,9 @@ class GameController {
         }
 
         // Actual game logic
-        gameInstance.score = gameLogicService.calcScore(gameInstance.solution?.toList(), gameInstance.guess?.toList(), gameInstance.score)
+        gameInstance.score = gameLogicService.calcScore(gameInstance.solution?.toList(), gameInstance.guess, gameInstance.score)
         // service.hasLost(score)
-        gameInstance.answers = gameLogicService.newAnswers(gameInstance.answers, gameInstance.guess?.toList())
+        gameInstance.answers = gameLogicService.newAnswers(gameInstance.answers?.toList(), gameInstance.guess)?.join()
         //service.hasWon(solution, answers) == false
         gameInstance.currentSolution = gameLogicService.printer(gameInstance.solution?.toList(), gameInstance.answers?.toList())      
 
