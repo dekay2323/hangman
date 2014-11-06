@@ -27,13 +27,19 @@ class GameLogicService {
     * This appends the guess onto the end of the answers
     */
     Collection newAnswers(Collection answers, String guess) {
-        answers + guess.toLowerCase()
+        answers + guess?.toLowerCase()
     }
 
     Integer calcScore(Collection solution, String guess, Integer score) {
-        if (guess?.toList()?.intersect(solution)?.size() == 0)
+        if (solution?.find{it?.toLowerCase() == guess?.toLowerCase()} <= 0)
             return score-1
         score
+    }
+
+    Boolean correctGuess(Collection solution, String guess) {
+        if (solution?.find{it?.toLowerCase() == guess?.toLowerCase()} > 0)
+            return true
+        false        
     }
 
     Boolean hasWon(Collection solution, Collection answers) {

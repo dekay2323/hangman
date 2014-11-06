@@ -79,6 +79,20 @@ class GameLogicServiceSpec extends Specification {
 			response == 8
 	}    
 
+    void "Test the correctGuess"() {
+        when:"Did not get a correct guess"
+            def response = service.correctGuess("testtest".toList(), "a")
+
+        then:"We should see false"
+            response == false
+
+        when:"Did get a correct guess"
+            response = service.correctGuess("testtest".toList(), "s")
+
+        then:"WWe should see true"
+            response == true
+    }      
+
     void "Test the newAnswer"() {
         when:"Add a new char to the answers"
         	def response = service.newAnswers("abc".toList(), "d")

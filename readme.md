@@ -52,7 +52,8 @@
 		- More difficult for initial people to pick up, less compiler checking
 		- Decided to type them
 	** Add robustness with upfront asserts, self documenting code is nice!
-
+	- Should add is guess correct
+	
 	- Robustify tests
 		- Test for bizarre stuff
 		- upper lower
