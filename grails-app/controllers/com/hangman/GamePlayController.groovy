@@ -8,6 +8,8 @@ class GamePlayController {
    static allowedMethods = [guess: "PUT"]
    //static responseFormats = ['html', 'json', 'xml']
 
+   def gameLogic
+
    // Show available games for user
    // http://localhost:8080/hangman/gamePlay/index?userId=1
     def index() {
@@ -43,7 +45,7 @@ class GamePlayController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'Game.label', default: 'Game'), gameInstance.id])
-                redirect gameInstance
+                redirect show
             }
             '*'{ respond gameInstance, [status: OK] }
         }

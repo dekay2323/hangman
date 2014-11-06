@@ -50,6 +50,13 @@
 				</li>
 				</g:if>
 			
+				<li class="fieldcontain">
+					<span id="currentSolution-label" class="property-label"><g:message code="game.currentSolution.label" default="Current Solution" /></span>
+					
+						<span class="property-value" aria-labelledby="currentSolution-label"><g:fieldValue bean="${gameInstance}" field="currentSolution"/></span>
+					
+				</li>
+			
 				<g:if test="${gameInstance?.guess}">
 				<li class="fieldcontain">
 					<span id="guess-label" class="property-label"><g:message code="game.guess.label" default="Guess" /></span>

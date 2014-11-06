@@ -6,6 +6,7 @@ class Game {
 	String question
 	String answers = ""
     String guess
+    String currentSolution
 
 	Integer score = 8
 
@@ -13,6 +14,7 @@ class Game {
     	solution nullable: false, blank: false
     	question nullable: false, blank: false
     	answers nullable: true, blank: true
+        currentSolution nullable: true, blank: true
         guess size: 1..1, nullable: true, blank: true
     }
 

@@ -30,11 +30,11 @@
 					
 						<g:sortableColumn property="answers" title="${message(code: 'game.answers.label', default: 'Answers')}" />
 					
+						<g:sortableColumn property="currentSolution" title="${message(code: 'game.currentSolution.label', default: 'Current Solution')}" />
+					
 						<g:sortableColumn property="guess" title="${message(code: 'game.guess.label', default: 'Guess')}" />
 					
 						<g:sortableColumn property="score" title="${message(code: 'game.score.label', default: 'Score')}" />
-					
-						<th><g:message code="game.user.label" default="User" /></th>
 					
 					</tr>
 				</thead>
@@ -48,11 +48,11 @@
 					
 						<td>${fieldValue(bean: gameInstance, field: "answers")}</td>
 					
+						<td>${fieldValue(bean: gameInstance, field: "currentSolution")}</td>
+					
 						<td>${fieldValue(bean: gameInstance, field: "guess")}</td>
 					
 						<td>${fieldValue(bean: gameInstance, field: "score")}</td>
-					
-						<td>${fieldValue(bean: gameInstance, field: "user")}</td>
 					
 					</tr>
 				</g:each>

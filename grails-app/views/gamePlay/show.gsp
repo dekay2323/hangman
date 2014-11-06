@@ -33,7 +33,10 @@
 			</li>
 			<li class="fieldcontain">
 				<span id="solution-label" class="property-label">answers</span>				<span class="property-value" aria-labelledby="solution-label">${gameInstance?.answers}</span>	
-			</li>		
+			</li>	
+			<li class="fieldcontain">
+				<span id="solution-label" class="property-label">currentSolution</span>				<span class="property-value" aria-labelledby="solution-label">${gameInstance?.currentSolution}</span>	
+			</li>						
 			</ol>
 		</div>
 		<div id="edit-game" class="content scaffold-edit" role="main">
