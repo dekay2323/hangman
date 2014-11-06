@@ -26,7 +26,7 @@ class GameLogicServiceSpec extends Specification {
 
         and:"First guess is wrong"
             def guess = "a"
-            def resp = service.gameTurnLogicJson(solution, answers, guess, score)
+            def resp = service.gameTurnLogic(solution, answers, guess, score)
 
         then:"Guess is wrong, answers must grow, score goes down, and you have not won nor lost"
  
@@ -41,7 +41,7 @@ class GameLogicServiceSpec extends Specification {
 
         and:"Second guess is correct"
             guess = "e"
-            resp = service.gameTurnLogicJson(solution, answers, guess, score)
+            resp = service.gameTurnLogic(solution, answers, guess, score)
 
         then:"Guess is correct, answers must grow, score stays the same, and you have not won nor lost"
      
@@ -56,7 +56,7 @@ class GameLogicServiceSpec extends Specification {
 
         and:"Third guess is correct"
             guess = "s"
-            resp = service.gameTurnLogicJson(solution, answers, guess, score)
+            resp = service.gameTurnLogic(solution, answers, guess, score)
 
         then:"Guess is correct, answers must grow, score stays the same, and you have not won nor lost"
      
@@ -71,7 +71,7 @@ class GameLogicServiceSpec extends Specification {
 
         and:"Third guess is correct"
             guess = "t"
-            resp = service.gameTurnLogicJson(solution, answers, guess, score)
+            resp = service.gameTurnLogic(solution, answers, guess, score)
 
         then:"Guess is correct, answers must grow, score stays the same, and you have not won nor lost"
      
@@ -110,17 +110,29 @@ class GameLogicServiceSpec extends Specification {
 
     void "hasWon(solution, answers) answers has not won"() {
         when:
-        	def response = service.hasWon("testtest".toList(), "txszmnyh".toList())
+        	def response1 = service.hasWon("testtest".toList(), "txszmnyh".toList())
+            def response2 = service.hasWon("TesT".toList(), "txszmnyh".toList())
+            def response3 = service.hasWon("TesT".toList(), "Txszmnyh".toList())
+            def response4 = service.hasWon("TesT".toList(), "Txszmnh".toList())
 
         then:"Then hasWon should be false"
-			response == false    
+			response1 == false    
+            response2 == false    
+            response3 == false    
+            response4 == false    
     }
     void "hasWon(solution, answers) answers has won"() {
 	    when:
-        	def response = service.hasWon("testtest".toList(), "txszmnbve".toList())
+        	def response1 = service.hasWon("testtest".toList(), "txszmnbve".toList())
+            def response2 = service.hasWon("Testtest".toList(), "txszmnbve".toList())
+            def response3 = service.hasWon("testtest".toList(), "Txszmnbve".toList())
+            def response4 = service.hasWon("Testtest".toList(), "TxszMnbve".toList())
 
         then:"Then hasWon should be true"
-			response == true    		
+			response1 == true    		
+            response2 == true           
+            response3 == true           
+            response4 == true           
     }    
 
     void "ThasLost(score) score has not lost"() {
@@ -155,18 +167,40 @@ class GameLogicServiceSpec extends Specification {
 
     void "correctGuess(solution, guess, score) Did not get a correct guess"() {
         when:
-            def response = service.correctGuess("testtest".toList(), "a")
+            def response1 = service.correctGuess("testtest".toList(), "a")
+            def response2 = service.correctGuess("testtest".toList(), "A")
+
+        then:"We should see false"
+            response1 == false
+            response2 == false            
+    }
+    void "correctGuess(solution, guess, score) Did get a correct guess"() {
+        when:
+            def response1 = service.correctGuess("s".toList(), "s")
+            def response2 = service.correctGuess("S".toList(), "s")
+            def response3 = service.correctGuess("s".toList(), "S")
+            def response4 = service.correctGuess("S".toList(), "S")
+
+        then:"We should see true"
+            response1 == true
+            response2 == true
+            response3 == true
+            response4 == true
+   }      
+    void "guessedBefore(solution, guess, score) Did not get a correct guess"() {
+        when:
+            def response = service.guessedBefore("abcd".toList(), "e")
 
         then:"We should see false"
             response == false
     }
-    void "correctGuess(solution, guess, score) Did get a correct guess"() {
+    void "guessedBefore(solution, guess, score) Did get a correct guess"() {
         when:
-            def response = service.correctGuess("testtest".toList(), "s")
+            def response = service.guessedBefore("abcd".toList(), "a")
 
         then:"We should see true"
             response == true
-    }      
+    }     
 
     void "newAnswer(answers, guess) Add a new char to the answers"() {
         when:

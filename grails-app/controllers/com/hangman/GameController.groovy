@@ -74,7 +74,7 @@ class GameController {
         }
 
         // Game Logic (using JSON)
-        def response = gameLogicService.gameTurnLogicJson(gameInstance.solution, gameInstance.answers, gameInstance.guess, gameInstance.score)
+        def response = gameLogicService.gameTurnLogic(gameInstance.solution, gameInstance.answers, gameInstance.guess, gameInstance.score)
 
         println response?.gamePlay
 
@@ -135,32 +135,4 @@ class GameController {
         def resp = gameLogicJson(params?.solution, params?.answers, params?.guess, params?.score?.toInteger())
         render resp as JSON
     }
-
-
-
-
-  /*  private void gameLogic(def gameInstance, def flash) {
-        assert gameInstance != null, "GameInstance should not be null"
-        // Actual game logic
-        def solution = gameInstance.solution?.toList()
-        def guess = gameInstance.guess
-
-        if (gameLogicService.correctGuess(solution, guess))
-            flash.message = "You guessed a letter correctly"
-        else
-            flash.message = "Wrong guess"
-
-        gameInstance.score = gameLogicService.calcScore(solution, guess, gameInstance.score)
-        gameInstance.answers = gameLogicService.newAnswers(gameInstance.answers?.toList(), guess)?.join()
-        gameInstance.currentSolution = gameLogicService.printer(solution, gameInstance.answers?.toList())  
-        if (gameLogicService.hasWon(solution, gameInstance.answers?.toList())) {
-            flash.message = "You have won"
-            gameInstance.dateWon = new Date()
-        }
-
-        if (gameLogicService.hasLost(gameInstance.score)) { 
-            flash.message = "You have lost"
-            gameInstance.dateLost = new Date()
-        }
-    }*/
 }

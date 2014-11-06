@@ -43,6 +43,12 @@ class GameLogicService {
             return true
         false        
     }
+    
+    Boolean guessedBefore(Collection answers, String guess) {
+        if (answers?.find{it?.toLowerCase() == guess?.toLowerCase()} > 0)
+            return true
+        false       
+    }
 
     Boolean hasWon(Collection solution, Collection answers) {
         // Set removes duplicates
@@ -76,7 +82,7 @@ class GameLogicService {
     * 
     * @return JSON result set
     */
-    def gameTurnLogicJson(def solutionParam, def answersParam, def guessParam, def scoreParam) {
+    def gameTurnLogic(def solutionParam, def answersParam, def guessParam, def scoreParam) {
         solutionParam = solutionParam?.toList()
         answersParam = newAnswers(answersParam?.toList(), guessParam)?.join()
         scoreParam = calcScore(solutionParam, guessParam, scoreParam)
