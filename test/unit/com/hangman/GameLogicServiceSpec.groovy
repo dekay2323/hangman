@@ -74,7 +74,7 @@ class GameLogicServiceSpec extends Specification {
 
     void "hasWon(solution, answers) answers has not won"() {
         when:
-        	def response = service.hasWon("testtest".toList(), "txszmnbv".toList())
+        	def response = service.hasWon("testtest".toList(), "txszmnyh".toList())
 
         then:"Then hasWon should be false"
 			response == false    
@@ -143,10 +143,11 @@ class GameLogicServiceSpec extends Specification {
     void "Upper and lowercase solution and answers should make no difference"() {
         when:
             def solution = "Aba".toList()
+            def answers = "Aba".toList()
 
         then:"Should ignore uppercase/lowercase"
-            service.newAnswers(solution, 'C') == service.newAnswers(solution, 'c')
-            service.newAnswers(solution, 'c') == service.newAnswers(solution, 'c')
+            service.newAnswers(answers, 'C') == service.newAnswers(solution, 'c')
+            service.newAnswers(answers, 'c') == service.newAnswers(solution, 'c')
             service.correctGuess(solution, 'a') == true
             service.correctGuess(solution, 'A') == true
             service.correctGuess(solution, 'C') == false
@@ -154,6 +155,9 @@ class GameLogicServiceSpec extends Specification {
             service.calcScore(solution, 'a', 1) == 1
             service.printer(solution, 'A'.toList()) == "A.a"
             service.printer(solution, 'a'.toList()) == "A.a"
-            service.printer(solution, 'B'.toList()) == ".b."            
+            service.printer(solution, 'B'.toList()) == ".b."         
+            service.hasWon(solution, "AB".toList()) == true   
+            service.hasWon(solution, "ab".toList()) == true   
+            service.hasWon(solution, "aB".toList()) == true   
     }
 }

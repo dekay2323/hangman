@@ -45,8 +45,9 @@ class GameLogicService {
     }
 
     Boolean hasWon(Collection solution, Collection answers) {
-        Set solutionSet = solution as Set
-        Set answerSet = answers as Set
+        // Set removes duplicates
+        Set solutionSet = (solution as Set).collect {it.toLowerCase()}
+        Set answerSet = (answers as Set).collect {it.toLowerCase()}
         if (answerSet.intersect(solutionSet).size() == solutionSet.size())
             return true
 
