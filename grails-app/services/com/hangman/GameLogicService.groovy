@@ -37,6 +37,9 @@ class GameLogicService {
         answers + guess?.toLowerCase()
     }
 
+    /**
+    * Returns the new score 
+    */
     Integer calcScore(Collection solution, String guess, Integer score) {
         assert solution != null, "solution parameter should not be null"     
         assert guess != null, "guess parameter should not be null" 
@@ -46,6 +49,9 @@ class GameLogicService {
         score
     }
 
+    /**
+    * Is this guess correct
+    */
     Boolean correctGuess(Collection solution, String guess) {
         assert solution != null, "solution parameter should not be null"     
         assert guess != null, "guess parameter should not be null"  
@@ -54,6 +60,9 @@ class GameLogicService {
         false        
     }
     
+    /**
+    * Have you guessed this before
+    */
     Boolean guessedBefore(Collection answers, String guess) {
         assert answers != null, "answers parameter should not be null"     
         assert guess != null, "guess parameter should not be null" 
@@ -62,6 +71,9 @@ class GameLogicService {
         false       
     }
 
+    /**
+    * Has the game been won
+    */
     Boolean hasWon(Collection solution, Collection answers) {
         assert solution != null, "solution parameter should not be null"     
         assert answers != null, "guess parameter should not be null" 
@@ -74,6 +86,9 @@ class GameLogicService {
         false
     }
     
+    /**
+    * Has the game been lost
+    */
     Boolean hasLost(Integer score) {
         assert score != null, "score parameter should not be null"  
         if (score <= 0)
@@ -82,6 +97,9 @@ class GameLogicService {
         false
     }
     
+    /**
+    * Currently this is the parts that have been solved.
+    */
     String currentSolution(Collection solution, Collection answers) {
         assert solution != null, "solution parameter should not be null"     
         assert answers != null, "guess parameter should not be null" 
@@ -94,10 +112,11 @@ class GameLogicService {
     }
 
     /**
-    * Core game play turn logic which
+    * Core game play turn logic, actually plays the turn
     *
     * 
-    * @return JSON result set
+    * @return JSON result set 
+    * @TODO Json result set could be interface allowing other services to render
     */
     def gameTurnLogic(def solutionParam, def answersParam, def guessParam, def scoreParam) {
         assert solutionParam != null, "solution parameter should not be null"     

@@ -1,4 +1,43 @@
 #Hangman implementation in Grails#
+Simple hangman game built in Grails.
+Restful, returns json, main logic is available through web service
+Game framework could support variety of games
+
+##Installation##
+- Install JDK 7+
+- Install Grails 2.4.4
+- https://github.com/dekay2323/hangman.git
+
+##Running locally##
+- Grails run-app
+- Key Entry Points
+  - Admin user to create games http://localhost:8080/hangman/game/index
+  - User to start playing a game http://localhost:8080/hangman/gamePlay/index
+- JSON
+  - Admin user to create games http://localhost:8080/hangman/game/index
+  - User to start playing a game http://localhost:8080/hangman/gamePlay/index
+    - Game can be played through URL and JSON http://localhost:8080/hangman/gamePlay/gameTurnLogic/2?guess=a
+
+##TODO##
+	- Front End
+	- More tests (controllers and rest)
+		- Strange cases, nulls, massive strings
+	- Java doc
+	- Strings used should be in .messages
+	- Handling of special chars not perfect
+	- Retrned object should be interface
+	- GameLogic should be abstract or interface
+
+	- Versioning REST resources
+	- Griffon
+	- Code Coverage
+	- Circuit breaker
+	- Load Test
+	- Profile
+	- Async
+	- Admin console/health
+
+
 
 ##Development Steps##
 - New Computer
@@ -73,18 +112,3 @@
 
 
 	#TODOLIST#
-	- More tests (controllers and rest)
-	- Java doc
-	- log4j
-	- Handling of special chars not perfect
-
-
-	- 9.1.4 Versioning REST resources
-	- REST
-	- Griffon
-	- Code Coverage
-	- Circuit breaker
-	- Load Test
-	- Profile
-	- Async
-	

@@ -3,6 +3,7 @@ package com.hangman
 import grails.test.mixin.TestMixin
 import grails.test.mixin.support.GrailsUnitTestMixin
 import spock.lang.Specification
+import spock.lang.Unroll
 
 /**
  * See the API for {@link grails.test.mixin.support.GrailsUnitTestMixin} for usage instructions
@@ -18,6 +19,7 @@ class GameLogicServiceSpec extends Specification {
     }
 
 
+    @Unroll
     void "USER STORY: Play until win"() {
         when:"Game starts, First guess is wrong"
             def score = 8

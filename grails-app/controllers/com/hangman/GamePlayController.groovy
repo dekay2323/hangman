@@ -42,7 +42,7 @@ class GamePlayController {
         }
 
         // Game Logic (using JSON)
-        def resp = gameLogicService.gameTurnLogic(gameInstance.solution, gameInstance.answers ?: "", gameInstance.guess ?: "", gameInstance.score)
+        def resp = gameLogicService.gameTurnLogic(gameInstance.solution ?: "", gameInstance.answers ?: "", gameInstance.guess ?: "", gameInstance.score)
 
         flash.message = resp?.gamePlay?.message
 
