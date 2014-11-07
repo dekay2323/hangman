@@ -28,6 +28,8 @@ class BootStrap {
 			game.save(flush: true)
 			game = new Game(user: user2, solution: "Vulcan", question: "Spock's birth planet?")
 			game.save(flush: true)            
+			game = new Game(user: user1, solution: "James Doohan", question: "Which Star Trek Actor Is Responsible For Inventing The Klingon Language?")
+			game.save(flush: true)  
         }
 
 

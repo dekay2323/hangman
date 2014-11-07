@@ -23,14 +23,6 @@
 			</g:if>
 			<ol class="property-list game">
 			
-				<g:if test="${gameInstance?.solution}">
-				<li class="fieldcontain">
-					<span id="solution-label" class="property-label"><g:message code="game.solution.label" default="Solution" /></span>
-					
-						<span class="property-value" aria-labelledby="solution-label"><g:fieldValue bean="${gameInstance}" field="solution"/></span>
-					
-				</li>
-				</g:if>
 			
 				<g:if test="${gameInstance?.question}">
 				<li class="fieldcontain">
@@ -59,35 +51,31 @@
 			
 				<g:if test="${gameInstance?.guess}">
 				<li class="fieldcontain">
-					<span id="guess-label" class="property-label"><g:message code="game.guess.label" default="Guess" /></span>
+					<span id="guess-label" class="property-label"><g:message code="game.guess.label" default="Last Guess" /></span>
 					
 						<span class="property-value" aria-labelledby="guess-label"><g:fieldValue bean="${gameInstance}" field="guess"/></span>
 					
 				</li>
 				</g:if>
 			
+				<g:if test="${gameInstance?.dateWon}">
 				<li class="fieldcontain">
 					<span id="dateWon-label" class="property-label"><g:message code="game.dateWon.label" default="Date Won" /></span>
 					
 						<span class="property-value" aria-labelledby="dateWon-label"><g:formatDate date="${gameInstance?.dateWon}" /></span>
 					
 				</li>
-			
+				</g:if>
+
+				<g:if test="${gameInstance?.dateLost}">
 				<li class="fieldcontain">
 					<span id="dateLost-label" class="property-label"><g:message code="game.dateLost.label" default="Date Lost" /></span>
 					
 						<span class="property-value" aria-labelledby="dateLost-label"><g:formatDate date="${gameInstance?.dateLost}" /></span>
 					
 				</li>
-			
-				<g:if test="${gameInstance?.dateStarted}">
-				<li class="fieldcontain">
-					<span id="dateStarted-label" class="property-label"><g:message code="game.dateStarted.label" default="Date Started" /></span>
-					
-						<span class="property-value" aria-labelledby="dateStarted-label"><g:formatDate date="${gameInstance?.dateStarted}" /></span>
-					
-				</li>
 				</g:if>
+			
 			
 				<g:if test="${gameInstance?.score}">
 				<li class="fieldcontain">
@@ -108,7 +96,7 @@
 				</g:if>
 			
 			</ol>
-			<g:form action="update" id="1" method="PUT" >
+			<g:form action="update" id="${gameInstance?.id}" method="PUT" >
 				<g:hiddenField name="version" value="${gameInstance?.version}" />
 				<fieldset class="form">
 					<div class="fieldcontain ${hasErrors(bean: gameInstance, field: 'guess', 'error')} ">

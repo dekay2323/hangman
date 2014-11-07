@@ -65,12 +65,12 @@
 
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: gameInstance, field: 'dateStarted', 'error')} required">
-	<label for="dateStarted">
-		<g:message code="game.dateStarted.label" default="Date Started" />
+<div class="fieldcontain ${hasErrors(bean: gameInstance, field: 'dateCreated', 'error')} required">
+	<label for="dateCreated">
+		<g:message code="game.dateCreated.label" default="Date Created" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:datePicker name="dateStarted" precision="day"  value="${gameInstance?.dateStarted}"  />
+	<g:datePicker name="dateCreated" precision="day"  value="${gameInstance?.dateCreated}"  />
 
 </div>
 

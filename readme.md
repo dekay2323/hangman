@@ -73,6 +73,8 @@
 
 
 	#TODOLIST#
+	-  At end of the game stop update
+	-
 	- 9.1.4 Versioning REST resources
 	- REST
 	-

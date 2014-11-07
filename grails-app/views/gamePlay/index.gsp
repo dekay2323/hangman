@@ -12,7 +12,6 @@
 		<div class="nav" role="navigation">
 			<ul>
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
 			</ul>
 		</div>
 		<div id="list-game" class="content scaffold-list" role="main">
@@ -23,37 +22,31 @@
 			<table>
 			<thead>
 					<tr>
-					
-						<g:sortableColumn property="solution" title="${message(code: 'game.solution.label', default: 'Solution')}" />
-					
+
 						<g:sortableColumn property="question" title="${message(code: 'game.question.label', default: 'Question')}" />
-					
-						<g:sortableColumn property="answers" title="${message(code: 'game.answers.label', default: 'Answers')}" />
 					
 						<g:sortableColumn property="currentSolution" title="${message(code: 'game.currentSolution.label', default: 'Current Solution')}" />
 					
-						<g:sortableColumn property="guess" title="${message(code: 'game.guess.label', default: 'Guess')}" />
+						<g:sortableColumn property="score" title="${message(code: 'game.score.label', default: 'Score')}" />
 					
 						<g:sortableColumn property="dateWon" title="${message(code: 'game.dateWon.label', default: 'Date Won')}" />
-					
+
+						<g:sortableColumn property="dateLost" title="${message(code: 'game.dateLost.label', default: 'Date Lost')}" />					
 					</tr>
 				</thead>
 				<tbody>
 				<g:each in="${gameInstanceList}" status="i" var="gameInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-					
-						<td><g:link action="show" id="${gameInstance.id}">${fieldValue(bean: gameInstance, field: "solution")}</g:link></td>
-					
-						<td>${fieldValue(bean: gameInstance, field: "question")}</td>
-					
-						<td>${fieldValue(bean: gameInstance, field: "answers")}</td>
+
+						<td><g:link action="show" id="${gameInstance.id}">${fieldValue(bean: gameInstance, field: "question")}</g:link></td>
 					
 						<td>${fieldValue(bean: gameInstance, field: "currentSolution")}</td>
 					
-						<td>${fieldValue(bean: gameInstance, field: "guess")}</td>
+						<td>${fieldValue(bean: gameInstance, field: "score")}</td>
 					
 						<td><g:formatDate date="${gameInstance.dateWon}" /></td>
-					
+
+						<td><g:formatDate date="${gameInstance.dateLost}" /></td>				
 					</tr>
 				</g:each>
 				</tbody>

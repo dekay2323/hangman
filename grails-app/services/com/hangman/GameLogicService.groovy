@@ -22,6 +22,7 @@ import grails.transaction.NotTransactional
 */
 class GameLogicService {
     static transactional = false
+    final static String UNSOLVED_BLOCK = " - "
 
     /**
     * This appends the guess onto the end of the answers
@@ -84,7 +85,7 @@ class GameLogicService {
         if (answers?.find {it?.toLowerCase() == solVar?.toLowerCase()} > 0)
            return solVar
         else
-           return '.'
+           return UNSOLVED_BLOCK
         }?.join()
     }
 

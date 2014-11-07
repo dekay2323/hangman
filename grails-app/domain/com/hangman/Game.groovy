@@ -7,7 +7,7 @@ class Game {
 	String answers
     String guess
     String currentSolution
-    Date dateStarted = new Date()
+    Date dateCreated = new Date()
     Date dateWon
     Date dateLost
 
@@ -21,6 +21,7 @@ class Game {
         guess size: 1..1, nullable: true, blank: true
         dateWon nullable: true
         dateLost nullable: true
+        user nullable: true
     }
 
     public String toString() {
