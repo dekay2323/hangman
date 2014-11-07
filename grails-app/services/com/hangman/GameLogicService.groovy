@@ -83,14 +83,36 @@ class GameLogicService {
     * @return JSON result set
     */
     def gameTurnLogic(def solutionParam, def answersParam, def guessParam, def scoreParam) {
-        solutionParam = solutionParam?.toList()
-        answersParam = newAnswers(answersParam?.toList(), guessParam)?.join()
-        scoreParam = calcScore(solutionParam, guessParam, scoreParam)
-        def won = hasWon(solutionParam, answersParam?.toList())
-        def lost = hasLost(scoreParam)
-
-        // Build JSON
         def builder = new groovy.json.JsonBuilder()
+        solutionParam = solutionParam?.toList()
+        scoreParam = calcScore(solutionParam, guessParam, scoreParam)
+
+        // Breaking condition
+        def guessedBefore = guessedBefore(answersParam.toList(), guessParam)
+        if (guessedBefore) {
+            return builder.gamePlay {
+                message "You have guessed this before"
+                guess guessParam
+            }           
+        }
+        // Breaking condition
+        def won = hasWon(solutionParam, answersParam?.toList()) 
+        if (won) {
+            return builder.gamePlay {
+                message "You have already won"
+            }   
+        }   
+        // Breaking condition 
+        def lost = hasLost(scoreParam)
+        if (won) {
+            return builder.gamePlay {
+                message "You have already won"
+            }   
+        }
+
+        // Normal game play
+        answersParam = newAnswers(answersParam?.toList(), guessParam)?.join()
+        won = hasWon(solutionParam, answersParam?.toList()) 
         return builder.gamePlay {
             if (correctGuess(solutionParam, guessParam)) {
                 message "You guessed correct"

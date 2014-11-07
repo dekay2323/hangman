@@ -59,7 +59,8 @@ class GameLogicServiceSpec extends Specification {
             resp = service.gameTurnLogic(solution, answers, guess, score)
 
         then:"Guess is correct, answers must grow, score stays the same, and you have not won nor lost"
-     
+            println "${resp?.gamePlay}"
+
             resp?.gamePlay?.correctGuess == true
             (score = resp?.gamePlay?.score) == 7
             resp?.gamePlay?.dateLost == null
@@ -74,7 +75,8 @@ class GameLogicServiceSpec extends Specification {
             resp = service.gameTurnLogic(solution, answers, guess, score)
 
         then:"Guess is correct, answers must grow, score stays the same, and you have not won nor lost"
-     
+             println "${resp?.gamePlay}"
+    
             resp?.gamePlay?.correctGuess == true
             (score = resp?.gamePlay?.score) == 7
             resp?.gamePlay?.dateLost == null
