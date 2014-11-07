@@ -30,6 +30,9 @@ class GameLogicService {
     Collection newAnswers(Collection answers, String guess) {
         assert answers != null, "answers parameter should not be null"
         assert guess != null, "guess parameter should not be null"
+        if (guessedBefore(answers, guess))
+            return answer
+
         answers + guess?.toLowerCase()
     }
 
@@ -78,7 +81,7 @@ class GameLogicService {
         false
     }
     
-    String printer(Collection solution, Collection answers) {
+    String currentSolution(Collection solution, Collection answers) {
         assert solution != null, "solution parameter should not be null"     
         assert answers != null, "guess parameter should not be null" 
         solution.collect { solVar ->
@@ -116,7 +119,7 @@ class GameLogicService {
         def lost = hasLost(scoreParam)
         if (won) {
             return builder.gamePlay {
-                message "You have already won"
+                message "You have already lost"
             }   
         }
         // Breaking condition
@@ -141,7 +144,8 @@ class GameLogicService {
             }
             score scoreParam
             answers answersParam
-            currentSolution printer(solutionParam, answersParam?.toList())  
+            guess guessParam
+            currentSolution currentSolution(solutionParam, answersParam?.toList())  
             if (won) {
                 message "You have won"
                 dateWon new Date()

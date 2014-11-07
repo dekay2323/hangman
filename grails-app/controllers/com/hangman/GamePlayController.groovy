@@ -52,7 +52,8 @@ class GamePlayController {
 
         // Try and save the Game ORM
         if (gameInstance.hasErrors()) {
-            respond gameInstance.errors, view:'edit'
+            println "Save Errors: ${gameInstance.errors}"
+            respond gameInstance.errors, view:'show'
             return
         }
 

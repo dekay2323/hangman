@@ -11,14 +11,16 @@ class Game {
     Date dateWon
     Date dateLost
 
-	Integer score = 8
+    def gameLogicService
+	
+    Integer score = 8
 
     static constraints = {
-    	solution size: 1..40, nullable: false, blank: false
+    	solution size: 1..40, nullable: false, blank: false, matches: "[0-9a-zA-Z .,-]*"
     	question size: 1..255, nullable: false, blank: false
     	answers size: 1..50, nullable: true, blank: true
         currentSolution size: 1..40, nullable: true, blank: true
-        guess size: 1..1, nullable: true, blank: true
+        guess size: 1..1, nullable: true, blank: true, matches: "[0-9a-zA-Z .,-]*"
         dateWon nullable: true
         dateLost nullable: true
         user nullable: true
@@ -27,4 +29,5 @@ class Game {
     public String toString() {
     	question
     }
+
 }

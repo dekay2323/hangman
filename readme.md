@@ -73,11 +73,12 @@
 
 
 	#TODOLIST#
-	-  At end of the game stop update
-	-
+	-  At end of the game stop update buttons
+	- Handling of special chars not perfect
+
+
 	- 9.1.4 Versioning REST resources
 	- REST
-	-
 	- Griffon
 	- Code Coverage
 	- Circuit breaker
