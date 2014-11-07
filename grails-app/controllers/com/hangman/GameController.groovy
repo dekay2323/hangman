@@ -128,11 +128,11 @@ class GameController {
         }
     }
 
-    // http://localhost:8080/hangman/game/gameLogic?solution=Aba&answers=&guess=a&score=3
-    def gameLogic() {
+    // http://localhost:8080/hangman/game/gameTurnLogic?solution=Aba&answers=&guess=a&score=3
+    def gameTurnLogic() {
         println "params ${params}"
 
-        def resp = gameLogicJson(params?.solution, params?.answers, params?.guess, params?.score?.toInteger())
+        def resp = gameLogicService.gameTurnLogic(params?.solution, params?.answers, params?.guess, params?.score?.toInteger())
         render resp as JSON
     }
 }

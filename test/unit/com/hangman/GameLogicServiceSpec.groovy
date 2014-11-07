@@ -18,7 +18,7 @@ class GameLogicServiceSpec extends Specification {
     }
 
 
-    void "USER STORY: Pay until win"() {
+    void "USER STORY: Play until win"() {
         when:"Game starts"
             def score = 8
             def solution = "testtest".toList()

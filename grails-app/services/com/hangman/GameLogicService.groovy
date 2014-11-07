@@ -33,24 +33,33 @@ class GameLogicService {
     }
 
     Integer calcScore(Collection solution, String guess, Integer score) {
+        assert solution != null, "solution parameter should not be null"     
+        assert guess != null, "guess parameter should not be null" 
+        assert score != null, "score parameter should not be null"    
         if (solution?.find{it?.toLowerCase() == guess?.toLowerCase()} <= 0)
             return score-1
         score
     }
 
     Boolean correctGuess(Collection solution, String guess) {
+        assert solution != null, "solution parameter should not be null"     
+        assert guess != null, "guess parameter should not be null"  
         if (solution?.find{it?.toLowerCase() == guess?.toLowerCase()} > 0)
             return true
         false        
     }
     
     Boolean guessedBefore(Collection answers, String guess) {
+        assert answers != null, "answers parameter should not be null"     
+        assert guess != null, "guess parameter should not be null" 
         if (answers?.find{it?.toLowerCase() == guess?.toLowerCase()} > 0)
             return true
         false       
     }
 
     Boolean hasWon(Collection solution, Collection answers) {
+        assert solution != null, "solution parameter should not be null"     
+        assert answers != null, "guess parameter should not be null" 
         // Set removes duplicates
         Set solutionSet = (solution as Set).collect {it.toLowerCase()}
         Set answerSet = (answers as Set).collect {it.toLowerCase()}
@@ -61,6 +70,7 @@ class GameLogicService {
     }
     
     Boolean hasLost(Integer score) {
+        assert score != null, "score parameter should not be null"  
         if (score <= 0)
             return true
             
@@ -68,10 +78,12 @@ class GameLogicService {
     }
     
     String printer(Collection solution, Collection answers) {
-       solution.collect { solVar ->
-       if (answers?.find {it?.toLowerCase() == solVar?.toLowerCase()} > 0)
+        assert solution != null, "solution parameter should not be null"     
+        assert answers != null, "guess parameter should not be null" 
+        solution.collect { solVar ->
+        if (answers?.find {it?.toLowerCase() == solVar?.toLowerCase()} > 0)
            return solVar
-       else
+        else
            return '.'
         }?.join()
     }
@@ -83,12 +95,16 @@ class GameLogicService {
     * @return JSON result set
     */
     def gameTurnLogic(def solutionParam, def answersParam, def guessParam, def scoreParam) {
+        assert solutionParam != null, "solution parameter should not be null"     
+        assert answersParam != null, "answers parameter should not be null" 
+        assert guessParam != null, "guess parameter should not be null"    
+        assert scoreParam != null, "score parameter should not be null"    
         def builder = new groovy.json.JsonBuilder()
         solutionParam = solutionParam?.toList()
         scoreParam = calcScore(solutionParam, guessParam, scoreParam)
 
         // Breaking condition
-        def guessedBefore = guessedBefore(answersParam.toList(), guessParam)
+        def guessedBefore = guessedBefore(answersParam?.toList(), guessParam)
         if (guessedBefore) {
             return builder.gamePlay {
                 message "You have guessed this before"
