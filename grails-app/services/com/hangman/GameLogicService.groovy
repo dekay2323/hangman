@@ -99,31 +99,33 @@ class GameLogicService {
     * @return JSON result set
     */
     def gameTurnLogic(def solutionParam, def answersParam, def guessParam, def scoreParam) {
+        log.debug "gameTurnLogic()"
         assert solutionParam != null, "solution parameter should not be null"     
         assert answersParam != null, "answers parameter should not be null" 
         assert guessParam != null, "guess parameter should not be null"    
         assert scoreParam != null, "score parameter should not be null"    
         def builder = new groovy.json.JsonBuilder()
         solutionParam = solutionParam?.toList()
-        scoreParam = calcScore(solutionParam, guessParam, scoreParam)
-
 
         // Breaking condition
+        log.debug "solutionParam = ${solutionParam}"
+        log.debug "answersParam = ${answersParam}"
         def won = hasWon(solutionParam, answersParam?.toList()) 
+        log.debug "won = ${won}"
         if (won) {
             return builder.gamePlay {
                 message "You have already won"
                 guess guessParam
-                correctGuess false
             }   
         }   
         // Breaking condition 
+        log.debug "scoreParam = ${scoreParam}"
         def lost = hasLost(scoreParam)
-        if (won) {
+        log.debug "lost = ${lost}"
+        if (lost) {
             return builder.gamePlay {
                 message "You have already lost"
                 guess guessParam
-                correctGuess false
             }   
         }
         // Breaking condition
@@ -132,11 +134,11 @@ class GameLogicService {
             return builder.gamePlay {
                 message "You have guessed this before"
                 guess guessParam
-                correctGuess false
             }           
         }
 
         // Normal game play
+        scoreParam = calcScore(solutionParam, guessParam, scoreParam)
         answersParam = newAnswers(answersParam?.toList(), guessParam)?.join()
         won = hasWon(solutionParam, answersParam?.toList()) 
         return builder.gamePlay {
@@ -151,12 +153,12 @@ class GameLogicService {
             answers answersParam
             guess guessParam
             currentSolution currentSolution(solutionParam, answersParam?.toList())  
-            if (won) {
+            if (hasWon(solutionParam, answersParam?.toList()) ) {
                 message "You have won"
                 dateWon new Date()
             }
 
-            if (lost) { 
+            if (hasLost(scoreParam)) { 
                 message "You have lost"
                 dateLost new Date()
             }

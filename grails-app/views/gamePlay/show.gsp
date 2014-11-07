@@ -118,6 +118,8 @@
 					<g:actionSubmit class="save" action="update" value="Guess" />
 				</fieldset>
 			</g:form>
+
+			<g:img dir="images" file="hang${gameInstance?.score}.gif"/>
 		</div>
 	</body>
 </html>

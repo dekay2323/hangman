@@ -13,7 +13,7 @@ class Game {
 
     def gameLogicService
 	
-    Integer score = 8
+    Integer score = 10
 
     static constraints = {
     	solution size: 1..40, nullable: false, blank: false, matches: "[0-9a-zA-Z .,-]*"
