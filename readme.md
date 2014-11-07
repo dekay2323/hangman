@@ -19,6 +19,8 @@ Game framework could support variety of games
     - Game can be played through URL and JSON http://localhost:8080/hangman/gamePlay/gameTurnLogic/2?guess=a
 
 ##TODO##
+	- Word Guess
+	- Spaces are kind of redundant
 	- Front End
 	- More tests (controllers and rest)
 		- Strange cases, nulls, massive strings
