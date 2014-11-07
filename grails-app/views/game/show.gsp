@@ -72,14 +72,14 @@
 						<span class="property-value" aria-labelledby="dateWon-label"><g:formatDate date="${gameInstance?.dateWon}" /></span>
 					
 				</li>
-
+			
 				<li class="fieldcontain">
 					<span id="dateLost-label" class="property-label"><g:message code="game.dateLost.label" default="Date Lost" /></span>
 					
 						<span class="property-value" aria-labelledby="dateLost-label"><g:formatDate date="${gameInstance?.dateLost}" /></span>
 					
-				</li>		
-
+				</li>
+			
 				<g:if test="${gameInstance?.dateStarted}">
 				<li class="fieldcontain">
 					<span id="dateStarted-label" class="property-label"><g:message code="game.dateStarted.label" default="Date Started" /></span>

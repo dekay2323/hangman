@@ -67,21 +67,19 @@ class GameController {
 
     @Transactional
     def update(Game gameInstance) {
-        println "update() ${gameInstance}"
         if (gameInstance == null) {
             notFound()
             return
         }
 
         // Game Logic (using JSON)
-        def response = gameLogicService.gameTurnLogic(gameInstance.solution, gameInstance.answers, gameInstance.guess, gameInstance.score)
+        def response = gameLogicService.gameTurnLogic(gameInstance.solution, gameInstance.answers ?: "", gameInstance.guess, gameInstance.score)
 
         println response?.gamePlay
-
-        // Change domain object
-        gameInstance.properties = response?.gamePlay
-
         flash.message = response?.gamePlay?.message
+
+        // Update domain object
+        gameInstance.properties = response?.gamePlay
 
         // Try and save the Game ORM
         if (gameInstance.hasErrors()) {

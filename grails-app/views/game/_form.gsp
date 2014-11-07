@@ -7,7 +7,7 @@
 		<g:message code="game.solution.label" default="Solution" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="solution" required="" value="${gameInstance?.solution}"/>
+	<g:textField name="solution" maxlength="40" required="" value="${gameInstance?.solution}"/>
 
 </div>
 
@@ -16,7 +16,7 @@
 		<g:message code="game.question.label" default="Question" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="question" required="" value="${gameInstance?.question}"/>
+	<g:textArea name="question" cols="40" rows="5" maxlength="255" required="" value="${gameInstance?.question}"/>
 
 </div>
 
@@ -25,7 +25,7 @@
 		<g:message code="game.answers.label" default="Answers" />
 		
 	</label>
-	<g:textField name="answers" value="${gameInstance?.answers}"/>
+	<g:textField name="answers" maxlength="50" value="${gameInstance?.answers}"/>
 
 </div>
 
@@ -34,7 +34,7 @@
 		<g:message code="game.currentSolution.label" default="Current Solution" />
 		
 	</label>
-	<g:textField name="currentSolution" value="${gameInstance?.currentSolution}"/>
+	<g:textField name="currentSolution" maxlength="40" value="${gameInstance?.currentSolution}"/>
 
 </div>
 
@@ -53,6 +53,15 @@
 		
 	</label>
 	<g:datePicker name="dateWon" precision="day"  value="${gameInstance?.dateWon}" default="none" noSelection="['': '']" />
+
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: gameInstance, field: 'dateLost', 'error')} ">
+	<label for="dateLost">
+		<g:message code="game.dateLost.label" default="Date Lost" />
+		
+	</label>
+	<g:datePicker name="dateLost" precision="day"  value="${gameInstance?.dateLost}" default="none" noSelection="['': '']" />
 
 </div>
 

@@ -103,14 +103,7 @@ class GameLogicService {
         solutionParam = solutionParam?.toList()
         scoreParam = calcScore(solutionParam, guessParam, scoreParam)
 
-        // Breaking condition
-        def guessedBefore = guessedBefore(answersParam?.toList(), guessParam)
-        if (guessedBefore) {
-            return builder.gamePlay {
-                message "You have guessed this before"
-                guess guessParam
-            }           
-        }
+
         // Breaking condition
         def won = hasWon(solutionParam, answersParam?.toList()) 
         if (won) {
@@ -124,6 +117,14 @@ class GameLogicService {
             return builder.gamePlay {
                 message "You have already won"
             }   
+        }
+        // Breaking condition
+        def guessedBefore = guessedBefore(answersParam?.toList(), guessParam)
+        if (guessedBefore) {
+            return builder.gamePlay {
+                message "You have guessed this before"
+                guess guessParam
+            }           
         }
 
         // Normal game play
