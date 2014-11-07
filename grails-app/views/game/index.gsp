@@ -12,7 +12,7 @@
 		<div class="nav" role="navigation">
 			<ul>
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="list" action="index"><g:message code="default.list.label" args="[entityName]" /></g:link></li>				
+				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
 			</ul>
 		</div>
 		<div id="list-game" class="content scaffold-list" role="main">
@@ -34,7 +34,7 @@
 					
 						<g:sortableColumn property="guess" title="${message(code: 'game.guess.label', default: 'Guess')}" />
 					
-						<g:sortableColumn property="score" title="${message(code: 'game.score.label', default: 'Score')}" />
+						<g:sortableColumn property="dateWon" title="${message(code: 'game.dateWon.label', default: 'Date Won')}" />
 					
 					</tr>
 				</thead>
@@ -52,7 +52,7 @@
 					
 						<td>${fieldValue(bean: gameInstance, field: "guess")}</td>
 					
-						<td>${fieldValue(bean: gameInstance, field: "score")}</td>
+						<td><g:formatDate date="${gameInstance.dateWon}" /></td>
 					
 					</tr>
 				</g:each>

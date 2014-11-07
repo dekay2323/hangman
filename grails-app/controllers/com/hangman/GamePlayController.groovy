@@ -9,7 +9,7 @@ import grails.converters.JSON
 @Transactional(readOnly = true)
 class GamePlayController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [save: "POST", update: ["PUT","GET"], delete: "DELETE"]
 
   	def gameLogicService
 
@@ -21,7 +21,7 @@ class GamePlayController {
     }
 
     // Show available games for user
-   // http://localhost:8080/hangman/gamePlay/listgame?userId=1
+   // http://localhost:8080/hangman/gamePlay/forUser/1
     def forUser() {
         println "index() ${params}"
         def games = User.get(params?.id)?.games
@@ -30,8 +30,9 @@ class GamePlayController {
 
     // Show the game
     // http://localhost:8080/hangman/gamePlay/show/1
+    // http://localhost:8080/hangman/gamePlay/show/1.json
     def show(Game gameInstance) {
-        respond gameInstance
+        respond gameInstance, formats: ['html', 'json']
     }
 
     @Transactional
@@ -42,13 +43,13 @@ class GamePlayController {
         }
 
         // Game Logic (using JSON)
-        def response = gameLogicService.gameTurnLogic(gameInstance.solution, gameInstance.answers ?: "", gameInstance.guess ?: "", gameInstance.score)
+        def resp = gameLogicService.gameTurnLogic(gameInstance.solution, gameInstance.answers ?: "", gameInstance.guess ?: "", gameInstance.score)
 
-        println response?.gamePlay
-        flash.message = response?.gamePlay?.message
+        println resp?.gamePlay
+        flash.message = resp?.gamePlay?.message
 
         // Update domain object
-        gameInstance.properties = response?.gamePlay
+        gameInstance.properties = resp?.gamePlay
 
         // Try and save the Game ORM
         if (gameInstance.hasErrors()) {
@@ -61,9 +62,8 @@ class GamePlayController {
 
         request.withFormat {
             form multipartForm {
-                redirect action:"show", id: gameInstance?.id
+                redirect action:"show", id: gameInstance?.id, formats: ['html', 'json']
             }
-            '*'{ respond action:"show", id: gameInstance?.id, [status: OK] }
         }
     }
 
@@ -77,11 +77,39 @@ class GamePlayController {
         }
     }
 
-    // http://localhost:8080/hangman/gamePlay/logic?solution=Aba&answers=&guess=a&score=3
-    def logic() {
+    // http://localhost:8080/hangman/gamePlay/gameTurnLogicSolution?solution=Aba&answers=&guess=a&score=3
+    def gameTurnLogicSolution() {
         println "params ${params}"
 
         def resp = gameLogicService.gameTurnLogic(params?.solution, params?.answers, params?.guess, params?.score?.toInteger())
+        render resp as JSON
+    }
+
+    // http://localhost:8080/hangman/gamePlay/gameTurnLogic/2?guess=a
+    def gameTurnLogic(Game gameInstance) {
+       if (gameInstance == null) {
+            notFound()
+            return
+        }
+
+        // Game Logic (using JSON)
+        def resp = gameLogicService.gameTurnLogic(gameInstance.solution, gameInstance.answers ?: "", params.guess ?: "", gameInstance.score)
+
+        println resp?.gamePlay
+        flash.message = resp?.gamePlay?.message
+
+        // Update domain object
+        gameInstance.properties = resp?.gamePlay
+
+        // Try and save the Game ORM
+        if (gameInstance.hasErrors()) {
+            println "Save Errors: ${gameInstance.errors}"
+            respond gameInstance.errors, view:'show'
+            return
+        }
+
+        gameInstance.save flush:true
+
         render resp as JSON
     }
 }
