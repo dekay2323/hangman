@@ -110,7 +110,7 @@
 							<g:message code="game.guess.label" default="Guess" />
 							
 						</label>
-						<g:textField name="guess" maxlength="1" pattern="${gameInstance.constraints.guess.matches}" value="${gameInstance?.guess}"/>
+						<g:textField name="guess" maxlength="1" pattern="${gameInstance.constraints.guess.matches}" value=""/>
 
 					</div>			
 				</fieldset>

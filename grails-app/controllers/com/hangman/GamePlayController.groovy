@@ -23,7 +23,6 @@ class GamePlayController {
     // Show available games for user
    // http://localhost:8080/hangman/gamePlay/forUser/1
     def forUser() {
-        println "index() ${params}"
         def games = User.get(params?.id)?.games
         respond games, [model: [gameInstanceList: games]]
     }
@@ -45,7 +44,6 @@ class GamePlayController {
         // Game Logic (using JSON)
         def resp = gameLogicService.gameTurnLogic(gameInstance.solution, gameInstance.answers ?: "", gameInstance.guess ?: "", gameInstance.score)
 
-        println resp?.gamePlay
         flash.message = resp?.gamePlay?.message
 
         // Update domain object
@@ -53,14 +51,13 @@ class GamePlayController {
 
         // Try and save the Game ORM
         if (gameInstance.hasErrors()) {
-            println "Save Errors: ${gameInstance.errors}"
             respond gameInstance.errors, view:'show'
             return
         }
 
         gameInstance.save flush:true
 
-        
+
 
         request.withFormat {
             form multipartForm {
@@ -81,7 +78,7 @@ class GamePlayController {
 
     // http://localhost:8080/hangman/gamePlay/gameTurnLogicSolution?solution=Aba&answers=&guess=a&score=3
     def gameTurnLogicSolution() {
-        println "params ${params}"
+        log.debug "params ${params}"
 
         def resp = gameLogicService.gameTurnLogic(params?.solution, params?.answers, params?.guess, params?.score?.toInteger())
         render resp as JSON
@@ -97,7 +94,7 @@ class GamePlayController {
         // Game Logic (using JSON)
         def resp = gameLogicService.gameTurnLogic(gameInstance.solution, gameInstance.answers ?: "", params.guess ?: "", gameInstance.score)
 
-        println resp?.gamePlay
+        log.debug resp?.gamePlay
         flash.message = resp?.gamePlay?.message
 
         // Update domain object
@@ -105,7 +102,6 @@ class GamePlayController {
 
         // Try and save the Game ORM
         if (gameInstance.hasErrors()) {
-            println "Save Errors: ${gameInstance.errors}"
             respond gameInstance.errors, view:'show'
             return
         }
