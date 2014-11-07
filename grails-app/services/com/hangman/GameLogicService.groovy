@@ -19,6 +19,7 @@ import grails.transaction.NotTransactional
 * solution : The actual solution that the user is trying to find
 * </li>
 * </ul>
+* @author Demian Krige
 */
 class GameLogicService {
     static transactional = false
