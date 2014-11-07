@@ -60,6 +60,8 @@ class GamePlayController {
 
         gameInstance.save flush:true
 
+        
+
         request.withFormat {
             form multipartForm {
                 redirect action:"show", id: gameInstance?.id, formats: ['html', 'json']

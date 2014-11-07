@@ -73,7 +73,9 @@
 
 
 	#TODOLIST#
-	-  At end of the game stop update buttons
+	- More tests (controllers and rest)
+	- Java doc
+	- log4j
 	- Handling of special chars not perfect
 
 
