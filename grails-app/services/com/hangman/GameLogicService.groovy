@@ -99,7 +99,6 @@ class GameLogicService {
     * @return JSON result set
     */
     def gameTurnLogic(def solutionParam, def answersParam, def guessParam, def scoreParam) {
-        log.debug "gameTurnLogic()"
         assert solutionParam != null, "solution parameter should not be null"     
         assert answersParam != null, "answers parameter should not be null" 
         assert guessParam != null, "guess parameter should not be null"    
@@ -108,10 +107,7 @@ class GameLogicService {
         solutionParam = solutionParam?.toList()
 
         // Breaking condition
-        log.debug "solutionParam = ${solutionParam}"
-        log.debug "answersParam = ${answersParam}"
         def won = hasWon(solutionParam, answersParam?.toList()) 
-        log.debug "won = ${won}"
         if (won) {
             return builder.gamePlay {
                 message "You have already won"
@@ -119,9 +115,7 @@ class GameLogicService {
             }   
         }   
         // Breaking condition 
-        log.debug "scoreParam = ${scoreParam}"
         def lost = hasLost(scoreParam)
-        log.debug "lost = ${lost}"
         if (lost) {
             return builder.gamePlay {
                 message "You have already lost"

@@ -19,85 +19,111 @@ class GameLogicServiceSpec extends Specification {
 
 
     void "USER STORY: Play until win"() {
-        when:"Game starts"
+        when:"Game starts, First guess is wrong"
             def score = 8
             def solution = "testtest".toList()
             def answers = "".toList()
-
-        and:"First guess is wrong"
             def guess = "a"
             def resp = service.gameTurnLogic(solution, answers, guess, score)
 
-        then:"Guess is wrong, answers must grow, score goes down, and you have not won nor lost" 
+        then:"Guess is wrong"
             resp?.gamePlay?.correctGuess == false
+        and:"score goes down"
             (score = resp?.gamePlay?.score) == 7
-            resp?.gamePlay?.dateLost == null
+        and:"answers must grow"
             (answers = resp?.gamePlay?.answers) == "a"
+        and:"you have not won nor lost"
+            resp?.gamePlay?.dateLost == null
             resp?.gamePlay?.dateWon == null
+        and:"Solution changes"
             resp?.gamePlay?.currentSolution == " -  -  -  -  -  -  -  - "
+        and:"Message should be you guessed wrong" 
             resp?.gamePlay?.message == "You guessed wrong"
 
-        when:"Second round"
-
-        and:"Second guess is correct"
+        when:"Second guess is correct"
             guess = "e"
             resp = service.gameTurnLogic(solution, answers, guess, score)
 
-        then:"Guess is correct, answers must grow, score stays the same, and you have not won nor lost"     
+        then:"Guess is correct"
             resp?.gamePlay?.correctGuess == true
+        and:"score stays the same"
             (score = resp?.gamePlay?.score) == 7
-            resp?.gamePlay?.dateLost == null
+        and:"answers must grow"
             (answers = resp?.gamePlay?.answers) == "ae"
+        and:"you have not won nor lost"
+            resp?.gamePlay?.dateLost == null
             resp?.gamePlay?.dateWon == null
+        and:"Solution changes"
             resp?.gamePlay?.currentSolution == " - e -  -  - e -  - "
+        and:"Message should be you guessed correct" 
             resp?.gamePlay?.message == "You guessed correct"
 
-
-        when:"Third round"
-
-        and:"Third guess is correct"
+        when:"Third guess is correct"
             guess = "s"
             resp = service.gameTurnLogic(solution, answers, guess, score)
 
-        then:"Guess is correct, answers must grow, score stays the same, and you have not won nor lost"
-            println "${resp?.gamePlay}"
+        then:"Guess is correct"
             resp?.gamePlay?.correctGuess == true
+        and:"score stays the same"
             (score = resp?.gamePlay?.score) == 7
-            resp?.gamePlay?.dateLost == null
+        and:"answers must grow"
             (answers = resp?.gamePlay?.answers) == "aes"
+        and:"you have not won nor lost"
+            resp?.gamePlay?.dateLost == null
             resp?.gamePlay?.dateWon == null
+        and:"Solution changes"
             resp?.gamePlay?.currentSolution == " - es -  - es - "
+        and:"Message should be you guessed correct" 
             resp?.gamePlay?.message == "You guessed correct"
 
-        when:"Fourth round"
-
-        and:"Fourth guess you should win"
+        when:"Fourth guess you should win"
             guess = "t"
             resp = service.gameTurnLogic(solution, answers, guess, score)
 
-        then:"Guess is correct, answers must grow, score stays the same, and you have won"
-             println "${resp?.gamePlay}"    
+        then:"Guess is correct"
             resp?.gamePlay?.correctGuess == true
+        and:"score stays the same"
             (score = resp?.gamePlay?.score) == 7
-            resp?.gamePlay?.dateLost == null
+        and:"answers must grow"
             (answers = resp?.gamePlay?.answers) == "aest"
+        and:"you have not won nor lost"
+            resp?.gamePlay?.dateLost == null
             resp?.gamePlay?.dateWon != null
+        and:"Solution changes"
             resp?.gamePlay?.currentSolution == "testtest"
+        and:"Message should be you have won" 
             resp?.gamePlay?.message == "You have won"
 
-        when:"Fifth round"
-
-        and:"You have already won"
+        when:"You have already won and guess"
             guess = "t"
             resp = service.gameTurnLogic(solution, answers, guess, score)
 
-        then:"Nothing should change"
-             println "${resp?.gamePlay}"    
-            resp?.gamePlay?.message == "You have already won"    
+        then:"score is null"
+            (score = resp?.gamePlay?.score) == null
+        and:"Message should be you have won" 
+            resp?.gamePlay?.message == "You have already won"   
     }
 
+    void "gameTurnLogic() Has Won already"() {
+        when:"Game has been won"
+            def response = service.gameTurnLogic(
+                "a", "a", "b", 1)
 
+        then:"Score should be null"
+            response?.gamePlay?.score == null
+        and:"Should say you have already won"
+            response?.gamePlay?.message == "You have already won"
+    }
+    void "gameTurnLogic() Has lost already"() {
+        when:"Game has been lost"
+            def response = service.gameTurnLogic(
+                "abc", "a", "b", 0)
 
+        then:"Score should be null"
+            response?.gamePlay?.score == null
+        and:"Should say you have already won"
+            response?.gamePlay?.message == "You have already lost"
+    }
 
     void "currentSolution(solution, answers) answers has no overlap with solution"() {
         when:
