@@ -2,7 +2,6 @@
 <html>
 	<head>
 		<meta name="layout" content="main"/>
-		<title>Welcome to Grails</title>
 		<style type="text/css" media="screen">
 			#status {
 				background-color: #eee;
@@ -103,11 +102,19 @@
 			</ul>
 		</div>
 		<div id="page-body" role="main">
-			<h1>Welcome to Grails</h1>
-			<p>Congratulations, you have successfully started your first Grails application! At the moment
-			   this is the default page, feel free to modify it to either redirect to a controller or display whatever
-			   content you may choose. Below is a list of controllers that are currently deployed in this application,
-			   click on each to execute its default action:</p>
+			<h1>Welcome to Hangman</h1>
+			<p>
+			Simple hangman game built in Grails.</br>
+			Restful, returns json, main logic is available through web service</br>
+			Game framework could support variety of games</br>
+			<h2>Key Entry Point Examples</h2>
+  			Admin user to create games <a href="/hangman/game/index">http://localhost:8080/hangman/game/index</a></br>
+ 			User to start playing a game <a href="/hangman/gamePlay/index">http://localhost:8080/hangman/gamePlay/index</a></br>
+			<h2>JSON Examples</h2>
+ 			Admin user to create games <a href="/hangman/game/index.json">http://localhost:8080/hangman/game/index.json</a></br>
+  			User to start playing a game <a href="/hangman/gamePlay/index.json">http://localhost:8080/hangman/gamePlay/index.json</a></br>
+    		Game can be played through URL and JSON <a href="/hangman/gamePlay/gameTurnLogic/2?guess=">http://localhost:8080/hangman/gamePlay/gameTurnLogic/2?guess=a</a></br>		
+			</p>
 
 			<div id="controller-list" role="navigation">
 				<h2>Available Controllers:</h2>

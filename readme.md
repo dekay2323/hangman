@@ -14,8 +14,8 @@ Game framework could support variety of games
   - Admin user to create games http://localhost:8080/hangman/game/index
   - User to start playing a game http://localhost:8080/hangman/gamePlay/index
 - JSON
-  - Admin user to create games http://localhost:8080/hangman/game/index
-  - User to start playing a game http://localhost:8080/hangman/gamePlay/index
+  - Admin user to create games http://localhost:8080/hangman/game/index.json
+  - User to start playing a game http://localhost:8080/hangman/gamePlay/index.json
     - Game can be played through URL and JSON http://localhost:8080/hangman/gamePlay/gameTurnLogic/2?guess=a
 
 ##TODO##
