@@ -67,6 +67,8 @@
 		- If we had turns could use url
 		/show/1?turn=2
 	- SPIKE to figure out how to return clean json instead of all the method calls in the builder
+	- Return json for logic
+	- Muddling of controllers is unnecessary
 
 
 

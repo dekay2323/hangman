@@ -108,7 +108,7 @@
 				</g:if>
 			
 			</ol>
-			<g:form url="[resource:gameInstance, controller:'gamePlay', action:'guess']" method="PUT" >
+			<g:form action="update" id="1" method="PUT" >
 				<g:hiddenField name="version" value="${gameInstance?.version}" />
 				<fieldset class="form">
 					<div class="fieldcontain ${hasErrors(bean: gameInstance, field: 'guess', 'error')} ">
