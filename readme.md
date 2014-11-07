@@ -22,6 +22,7 @@ Game framework could support variety of games
 	- Word Guess
 	- Spaces are kind of redundant
 	- Front End
+	- Game Domain should have Turns (possibly)
 	- More tests (controllers and rest)
 		- Strange cases, nulls, massive strings
 	- Java doc
