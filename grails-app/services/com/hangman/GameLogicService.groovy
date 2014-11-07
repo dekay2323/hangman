@@ -113,6 +113,8 @@ class GameLogicService {
         if (won) {
             return builder.gamePlay {
                 message "You have already won"
+                guess guessParam
+                correctGuess false
             }   
         }   
         // Breaking condition 
@@ -120,6 +122,8 @@ class GameLogicService {
         if (won) {
             return builder.gamePlay {
                 message "You have already lost"
+                guess guessParam
+                correctGuess false
             }   
         }
         // Breaking condition
@@ -128,6 +132,7 @@ class GameLogicService {
             return builder.gamePlay {
                 message "You have guessed this before"
                 guess guessParam
+                correctGuess false
             }           
         }
 

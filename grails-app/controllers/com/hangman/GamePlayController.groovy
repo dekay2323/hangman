@@ -110,6 +110,9 @@ class GamePlayController {
 
         gameInstance.save flush:true
 
+        // Place domain object into response
+        resp?.game = gameInstance
+
         render resp as JSON
     }
 }
